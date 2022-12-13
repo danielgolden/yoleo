@@ -1,5 +1,6 @@
 <script>
 import Settings from './components/Settings';
+import WordListing from './components/WordListing';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -84,6 +85,7 @@ export default defineComponent({
     }">{{ currentWordFormatted[char - 1] }}</span>
   </h1>
 
+  <WordListing :words="words" />
   <Settings @case-changed="(newValue) => setLetterCasing(newValue)" :currentSettings="gameSettings" />
 </template>
 
