@@ -51,6 +51,7 @@ button {
   left: 0;
   right: 0;
   overflow-x: auto;
+  background-color: #fff;
 }
 .word-list {
   display: flex;
