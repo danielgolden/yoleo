@@ -1,6 +1,7 @@
 <script>
 import Settings from './components/Settings';
 import WordListing from './components/WordListing';
+import NewWord from './components/NewWord';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -15,6 +16,7 @@ export default defineComponent({
         // order: 'chronologial', // random
         // wordLength
       },
+      newWordBeingAdded: false
     }
   },
   computed: {
@@ -59,6 +61,15 @@ export default defineComponent({
     },
     setLetterCasing(incomingSetting) {
       this.gameSettings.case = incomingSetting
+    },
+    addNewWord(incomingWord) {
+      this.words.push(incomingWord);
+      this.currentWordIndex = this.words.length - 1;
+      this.toggleNewWordComponent();
+    },
+    toggleNewWordComponent() {
+      console.log('bruh')
+      this.newWordBeingAdded = !this.newWordBeingAdded
     }
   },
   mounted: function () {
@@ -67,25 +78,21 @@ export default defineComponent({
       if (this.wordCompleted) this.advanceWord();
       if (letterIsCorrect) this.advanceCharacter();
     })
-  },
-  watch: {
-    currentCharIndex(newValue) {
-      console.log(`the new currentCharIndex: ${newValue}`);
-    }
   }
 })
 </script>
 
 
 <template>
-  <h1 class="current-word">
+  <h1 class="current-word" v-if="!newWordBeingAdded">
     <span v-for="char in currentWord.length" v-bind:key="currentWord" :class="{
       'highlighted-char': char <= currentCharIndex,
       'word-character': true,
     }">{{ currentWordFormatted[char - 1] }}</span>
   </h1>
 
-  <WordListing :words="words" />
+  <NewWord v-if="newWordBeingAdded" @new-word-submitted="(incomingWord) => addNewWord(incomingWord)"/>
+  <WordListing @new-word-triggered="() => toggleNewWordComponent()" :words="words" />
   <Settings @case-changed="(newValue) => setLetterCasing(newValue)" :currentSettings="gameSettings" />
 </template>
 
