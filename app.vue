@@ -92,7 +92,12 @@ export default defineComponent({
   </h1>
 
   <NewWord v-if="newWordBeingAdded" @new-word-submitted="(incomingWord) => addNewWord(incomingWord)"/>
-  <WordListing @new-word-triggered="() => toggleNewWordComponent()" :words="words" />
+  <WordListing 
+    @new-word-triggered="() => toggleNewWordComponent()" 
+    @update-active-word="(incomingWordIndex) => currentWordIndex = incomingWordIndex" 
+    :words="words"
+    :currentWordIndex="currentWordIndex"
+  />
   <Settings @case-changed="(newValue) => setLetterCasing(newValue)" :currentSettings="gameSettings" />
 </template>
 
