@@ -12,9 +12,17 @@ export default defineComponent({
   },
   methods: {
     focusInput() {
-      (this.$refs.newWordInput as any).focus();
+      (this.$refs.newWordInput as HTMLInputElement).focus();
     },
-  }
+  },
+  mounted: function () {
+    this.focusInput();
+
+    window.addEventListener("keydown", (e) => {
+      const escWasPressed = e.key === "Escape";
+      if (escWasPressed) this.$emit('hideNewWordView');
+    });
+  },
 });
 </script>
 

@@ -101,7 +101,7 @@ export default defineComponent({
     }">{{ currentWordFormatted[char - 1] }}</span>
   </h1>
 
-  <NewWord v-if="newWordBeingAdded" @new-word-submitted="(incomingWord: string) => addNewWord(incomingWord)"/>
+  <NewWord @hide-new-word-view="toggleNewWordComponent()" v-if="newWordBeingAdded" @new-word-submitted="(incomingWord: string) => addNewWord(incomingWord)"/>
   <WordListing 
     @new-word-triggered="() => toggleNewWordComponent()" 
     @update-active-word="(incomingWordIndex: number) => currentWordIndex = incomingWordIndex" 
