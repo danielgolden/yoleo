@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -15,6 +15,7 @@ export default defineComponent({
   mounted: function () {
     window.addEventListener("keydown", (e) => {
       const slashWasPressed = e.key === "/";
+      console.log('what');
       if (slashWasPressed) this.wordListActive = !this.wordListActive;
     });
   },
@@ -37,6 +38,10 @@ export default defineComponent({
 <style scoped>
 button {
   margin-right: 12px;
+  background-color: rgba(0 80 250 / 80%);
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 8px;
 }
 .word-listing {
   padding: 8px 24px 2px;
@@ -45,7 +50,7 @@ button {
   top: 0;
   left: 0;
   right: 0;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .word-list {
   display: flex;
@@ -56,12 +61,15 @@ button {
 }
 
 .word-list-item {
-  padding: 6px;
+  padding: 2px 8px 4px;
   border-radius: 4px;
   cursor: pointer;
+  color: rgba(0 0 0 / 65%);
 }
 .active-word-list-item {
-  background-color: rgba(0 0 0 / 80%);
-  color: #fff;
+  background-color: rgba(0 0 0 / 10%);
+  text-decoration: underline;
+  color: #000;
+  font-weight: 700;
 }
 </style>

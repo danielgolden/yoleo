@@ -1,7 +1,7 @@
-<script>
-import Settings from './components/Settings';
-import WordListing from './components/WordListing';
-import NewWord from './components/NewWord';
+<script lang="ts">
+import Settings from './components/Settings.vue';
+import WordListing from './components/WordListing.vue';
+import NewWord from './components/NewWord.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -65,10 +65,10 @@ export default defineComponent({
     addNewWord(incomingWord) {
       this.words.push(incomingWord);
       this.currentWordIndex = this.words.length - 1;
+      this.currentCharIndex = 0;
       this.toggleNewWordComponent();
     },
     toggleNewWordComponent() {
-      console.log('bruh')
       this.newWordBeingAdded = !this.newWordBeingAdded
     }
   },
@@ -104,9 +104,12 @@ export default defineComponent({
 <style>
 html {
   height: 100%;
+
 }
 
 body {
+  background-color: #fff;
+  color: rgb(0 0 0 / 100%);
   height: 100%;
   display: grid;
   place-items: center;
