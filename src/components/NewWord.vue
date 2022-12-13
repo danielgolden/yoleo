@@ -12,19 +12,9 @@ export default defineComponent({
   },
   methods: {
     focusInput() {
-      this.$refs.newWordInput.focus();
+      (this.$refs.newWordInput as any).focus();
     },
-  },
-  mounted: function () {
-    this.focusInput();
-
-    window.addEventListener("keydown", (e) => {
-      const slashWasPressed = e.key === "/";
-      const enterWasPressed = e.key === "Enter";
-      if (slashWasPressed) this.wordListActive = !this.wordListActive;
-      // if (enterWasPressed) this.wordListActive = !this.wordListActive;
-    });
-  },
+  }
 });
 </script>
 
@@ -32,8 +22,8 @@ export default defineComponent({
   <input
     type="text"
     :value="wordContents"
-    @input="(e) => wordContents = e.target.value"
-    @keydown.enter="(e) => $emit('newWordSubmitted', e.target.value)"
+    @input="(e) => wordContents = (e.target as HTMLInputElement).value"
+    @keydown.enter="(e) => $emit('newWordSubmitted', (e.target as HTMLInputElement).value)"
     ref="newWordInput"
   />
 </template>

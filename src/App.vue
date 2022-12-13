@@ -4,6 +4,16 @@ import WordListing from './components/WordListing.vue';
 import NewWord from './components/NewWord.vue';
 import { defineComponent } from 'vue';
 
+interface FormattingFunctions {
+  lower: () => string;
+  upper: () => string;
+  sentence: () => string;
+}
+
+interface gameSettings {
+  case: string;
+}
+
 export default defineComponent({
   data() {
     return {
@@ -26,7 +36,7 @@ export default defineComponent({
     currentChar() {
       return this.currentWord[this.currentCharIndex]
     },
-    currentWordFormatted() {
+    currentWordFormatted(): String {
       const formattingFunctions = {
         lower: () => this.currentWord.toLowerCase(),
         upper: () => this.currentWord.toUpperCase(),
@@ -35,7 +45,7 @@ export default defineComponent({
         }
       }
 
-      return formattingFunctions[this.gameSettings.case]()
+      return formattingFunctions[this.gameSettings.case as keyof FormattingFunctions]()
     }
   },
   methods: {
@@ -59,10 +69,10 @@ export default defineComponent({
       this.currentCharIndex = 0;
       this.wordCompleted = false;
     },
-    setLetterCasing(incomingSetting) {
+    setLetterCasing(incomingSetting: string) {
       this.gameSettings.case = incomingSetting
     },
-    addNewWord(incomingWord) {
+    addNewWord(incomingWord: string) {
       this.words.push(incomingWord);
       this.currentWordIndex = this.words.length - 1;
       this.currentCharIndex = 0;
@@ -91,14 +101,14 @@ export default defineComponent({
     }">{{ currentWordFormatted[char - 1] }}</span>
   </h1>
 
-  <NewWord v-if="newWordBeingAdded" @new-word-submitted="(incomingWord) => addNewWord(incomingWord)"/>
+  <NewWord v-if="newWordBeingAdded" @new-word-submitted="(incomingWord: string) => addNewWord(incomingWord)"/>
   <WordListing 
     @new-word-triggered="() => toggleNewWordComponent()" 
-    @update-active-word="(incomingWordIndex) => currentWordIndex = incomingWordIndex" 
+    @update-active-word="(incomingWordIndex: number) => currentWordIndex = incomingWordIndex" 
     :words="words"
     :currentWordIndex="currentWordIndex"
   />
-  <Settings @case-changed="(newValue) => setLetterCasing(newValue)" :currentSettings="gameSettings" />
+  <Settings @case-changed="(newValue: string) => setLetterCasing(newValue)" :currentSettings="gameSettings" />
 </template>
 
 <style>

@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  emits: ["newWordTriggered"],
+  emits: ["updateActiveWord", 'newWordTriggered'],
   data() {
     return {
       wordListActive: false,
@@ -27,8 +27,8 @@ export default defineComponent({
     <ul class="word-list">
       <li><button @click="$emit('newWordTriggered')">+</button></li>
       <li 
-        v-for="(word, index) in this.words" 
-        :class="{'word-list-item': true, 'active-word-list-item': index === this.currentWordIndex}" 
+        v-for="(word, index) in words" 
+        :class="{'word-list-item': true, 'active-word-list-item': index === currentWordIndex}" 
         @click="$emit('updateActiveWord', index)"
       >{{ word }}</li>
     </ul>
