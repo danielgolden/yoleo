@@ -118,7 +118,7 @@ body {
 }
 
 .highlighted-char {
-  color: green;
+  color: #1dad08;
 }
 
 .success-notice {
