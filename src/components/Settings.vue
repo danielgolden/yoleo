@@ -1,6 +1,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+interface gameSettings {
+  case: string;
+}
+
 export default defineComponent({
   emits: ["caseChanged"],
   data() {
@@ -29,11 +33,11 @@ export default defineComponent({
   <div :class="{ 'game-settings': true, 'active': gameSettingsVisible }">
     <h3 class="game-settings-heading">Letter case</h3>
     <ul>
-      <li :class="{ 'active': this.currentSettings.case === 'lower', 'game-setting-listing': true }"
+      <li :class="{ 'active': (currentSettings as gameSettings).case === 'lower', 'game-setting-listing': true }"
         @click="$emit('caseChanged', 'lower')">aa</li>
-      <li :class="{ 'active': this.currentSettings.case === 'sentence', 'game-setting-listing': true }"
+      <li :class="{ 'active': (currentSettings as gameSettings).case === 'sentence', 'game-setting-listing': true }"
         @click="$emit('caseChanged', 'sentence')">Aa</li>
-      <li :class="{ 'active': this.currentSettings.case === 'upper', 'game-setting-listing': true }"
+      <li :class="{ 'active': (currentSettings as gameSettings).case === 'upper', 'game-setting-listing': true }"
         @click="$emit('caseChanged', 'upper')">AA</li>
     </ul>
   </div>
