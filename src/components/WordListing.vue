@@ -15,7 +15,6 @@ export default defineComponent({
   mounted: function () {
     window.addEventListener("keydown", (e) => {
       const slashWasPressed = e.key === "/";
-      console.log('what');
       if (slashWasPressed) this.wordListActive = !this.wordListActive;
     });
   },
@@ -39,9 +38,14 @@ export default defineComponent({
 button {
   margin-right: 12px;
   background-color: rgba(0 80 250 / 80%);
-  font-weight: 700;
-  font-size: 16px;
-  border-radius: 8px;
+  font-weight: 500;
+  font-size: 24px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
 }
 .word-listing {
   padding: 8px 24px 2px;
