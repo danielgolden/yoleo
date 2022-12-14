@@ -108,9 +108,15 @@ export default defineComponent({
     saveWordList() {
       localStorage.setItem("leer-word-list", JSON.stringify(this.words));
     },
+    getdocumentHeight() {
+      const doc = document.documentElement
+      doc.style.setProperty('--doc-height', `${window.innerHeight}px`)
+    }
   },
   mounted: function () {
     this.loadWords();
+    this.getdocumentHeight()
+
     window.addEventListener("keydown", (e) => {
       const letterIsCorrect =
         e.key.toLowerCase() ===
@@ -118,6 +124,8 @@ export default defineComponent({
       if (this.wordCompleted) this.advanceWord();
       if (letterIsCorrect) this.advanceCharacter();
     });
+
+    window.addEventListener('resize', this.getdocumentHeight);
   },
 });
 </script>
