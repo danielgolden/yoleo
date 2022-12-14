@@ -2,16 +2,13 @@
 import Settings from './components/Settings.vue';
 import WordListing from './components/WordListing.vue';
 import NewWord from './components/NewWord.vue';
+import ConfettiExplosion from "vue-confetti-explosion";
 import { defineComponent } from 'vue';
 
 interface FormattingFunctions {
   lower: () => string;
   upper: () => string;
   sentence: () => string;
-}
-
-interface gameSettings {
-  case: string;
 }
 
 export default defineComponent({
@@ -26,7 +23,11 @@ export default defineComponent({
         // order: 'chronologial', // random
         // wordLength
       },
-      newWordBeingAdded: false
+      newWordBeingAdded: false,
+      windowSize: {
+        width: 1000,
+        height: 1000
+      }
     }
   },
   computed: {
@@ -88,12 +89,15 @@ export default defineComponent({
       if (this.wordCompleted) this.advanceWord();
       if (letterIsCorrect) this.advanceCharacter();
     })
+    this.windowSize.width = window.innerWidth - 100;
+    this.windowSize.height = window.innerHeight;
   }
 })
 </script>
 
 
 <template>
+  <ConfettiExplosion v-if="wordCompleted" :stageWidth="windowSize.width" :stageHeight="windowSize.height" />
   <h1 class="current-word" v-if="!newWordBeingAdded">
     <span v-for="char in currentWord.length" v-bind:key="currentWord" :class="{
       'highlighted-char': char <= currentCharIndex,
@@ -136,5 +140,12 @@ body {
 
 .success-notice {
   position: absolute;
+}
+
+.confetti-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
