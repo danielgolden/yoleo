@@ -115,18 +115,12 @@ export default defineComponent({
   <Settings @case-changed="(newValue: string) => setLetterCasing(newValue)" :currentSettings="gameSettings" />
 </template>
 
-<style>
-body {
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-  margin: 0;
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
+<style scoped>
 
 .current-word {
+  position: relative;
   font-size: 15vw;
+  z-index: 1;
 }
 
 .highlighted-char {
@@ -135,5 +129,11 @@ body {
 
 .success-notice {
   position: absolute;
+}
+.confetti-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
