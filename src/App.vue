@@ -116,17 +116,12 @@ export default defineComponent({
 </template>
 
 <style>
-html {
-  height: 100%;
-
-}
-
 body {
-  background-color: #fff;
-  color: rgb(0 0 0 / 100%);
-  height: 100%;
   display: grid;
   place-items: center;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
@@ -140,12 +135,5 @@ body {
 
 .success-notice {
   position: absolute;
-}
-
-.confetti-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 </style>

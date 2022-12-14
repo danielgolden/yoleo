@@ -45,7 +45,6 @@ input {
   width: 10ch;
   padding: 24px 32px 18px;
 
-  color: rgba(0 0 0 / 100%);
   font-weight: 600;
   font-size: 10vw;
   border: none;
