@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  emits: ["updateActiveWord", 'newWordTriggered'],
+  emits: ["newWordSelected", "newWordTriggered", "wordRemovalTriggered"],
   data() {
     return {
       wordListActive: false,
@@ -10,7 +10,7 @@ export default defineComponent({
   },
   props: {
     words: Array,
-    currentWordIndex: Number
+    currentWordIndex: Number,
   },
   mounted: function () {
     window.addEventListener("keydown", (e) => {
@@ -24,18 +24,38 @@ export default defineComponent({
 <template>
   <div v-if="wordListActive" class="word-listing">
     <ul class="word-list">
-      <li><button @click="$emit('newWordTriggered')">+</button></li>
-      <li 
-        v-for="(word, index) in words" 
-        :class="{'word-list-item': true, 'active-word-list-item': index === currentWordIndex}" 
-        @click="$emit('updateActiveWord', index)"
-      >{{ word }}</li>
+      <li>
+        <button
+          @click="$emit('newWordTriggered')"
+          class="word-button new-word-button"
+        >
+          +
+        </button>
+      </li>
+      <li>
+        <button
+          @click="$emit('wordRemovalTriggered')"
+          class="word-button remove-word-button"
+        >
+          -
+        </button>
+      </li>
+      <li
+        v-for="(word, index) in words"
+        :class="{
+          'word-list-item': true,
+          'active-word-list-item': index === currentWordIndex,
+        }"
+        @click="$emit('newWordSelected', index)"
+      >
+        {{ word }}
+      </li>
     </ul>
   </div>
 </template>
 
 <style scoped>
-button {
+.word-button {
   margin-right: 12px;
   background-color: rgba(0 80 250 / 80%);
   font-weight: 500;
@@ -47,6 +67,11 @@ button {
   border-radius: 6px;
   cursor: pointer;
 }
+
+.remove-word-button {
+  background-color: rgba(200 20 20/ 100%);
+}
+
 .word-listing {
   padding: 8px 24px 2px;
   border-top: 1px solid rgba(0 0 0 / 10%);
