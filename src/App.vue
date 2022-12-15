@@ -125,9 +125,12 @@ export default defineComponent({
 
       if (dataWasFound) {
         const parsedData = JSON.parse(loadedData);
+
         this.wordLists = parsedData.wordLists;
         this.currentWordListWords = this.wordLists[0].words;
         this.gameSettings = parsedData.gameSettings;
+        this.currentWordListIndex = parsedData.gameState.currentWordListIndex;
+        this.currentWordIndex = parsedData.gameState.currentWordIndex;
       } else {
         this.wordLists = [
           {
@@ -136,12 +139,17 @@ export default defineComponent({
             mostRecentWordIndex: 0,
           },
         ];
+        this.saveGameData();
       }
     },
     saveGameData() {
       const gameData = {
         wordLists: this.wordLists,
-        gameSettings: this.gameSettings, 
+        gameSettings: this.gameSettings,
+        gameState: {
+          currentWordListIndex: this.currentWordListIndex,
+          currentWordIndex: this.currentWordIndex
+        }
       }
       localStorage.setItem("leer-data", JSON.stringify(gameData));
     },
@@ -163,6 +171,10 @@ export default defineComponent({
     });
 
     window.addEventListener('resize', this.getdocumentHeight);
+
+    setInterval(() => {
+      this.saveGameData();
+    }, 5000);
   },
 });
 </script>
