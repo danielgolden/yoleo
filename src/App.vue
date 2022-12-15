@@ -14,8 +14,14 @@ interface FormattingFunctions {
 export default defineComponent({
   data() {
     return {
-      words: ["Ejemplo"],
-      defaultWords: ["Pa", "No", "Si", "Oso"],
+      wordLists: [
+        {
+          name: 'Default',
+          words: ["Pa", "No", "Si", "Oso"],
+          mostRecentWordIndex: 0,
+        },
+      ],
+      currentWordListIndex: 0,
       currentWordIndex: 0,
       currentCharIndex: 0,
       wordCompleted: false,
@@ -28,8 +34,11 @@ export default defineComponent({
     };
   },
   computed: {
+    currentWordListWords() {
+      return this.wordLists[this.currentWordListIndex].words;
+    },
     currentWord() {
-      return this.words[this.currentWordIndex];
+      return this.wordLists[this.currentWordListIndex].words[this.currentWordIndex];
     },
     currentChar() {
       return this.currentWord[this.currentCharIndex];
@@ -59,8 +68,8 @@ export default defineComponent({
     },
     advanceWord() {
       // Move the word forward one character
-
-      if (this.currentWordIndex === this.words.length - 1) {
+      const lastWordInListIsActive = this.currentWordIndex === this.currentWordListWords.length - 1;
+      if (lastWordInListIsActive) {
         this.currentWordIndex = 0;
       } else {
         this.currentWordIndex++;
@@ -73,11 +82,11 @@ export default defineComponent({
       this.gameSettings.case = incomingSetting;
     },
     addNewWord(incomingWord: string) {
-      this.words.push(incomingWord);
-      this.currentWordIndex = this.words.length - 1;
+      this.currentWordListWords.push(incomingWord);
+      this.currentWordIndex = this.currentWordListWords.length - 1;
       this.currentCharIndex = 0;
       this.toggleNewWordComponent();
-      this.saveWordList();
+      this.saveGameData();
     },
     toggleNewWordComponent() {
       this.newWordBeingAdded = !this.newWordBeingAdded;
@@ -87,26 +96,54 @@ export default defineComponent({
       this.currentCharIndex = 0;
     },
     removeWord() {
-      this.words.splice(this.currentWordIndex, 1);
-      if (this.words.length === 0) {
+      this.currentWordListWords.splice(this.currentWordIndex, 1);
+      if (this.currentWordListWords.length === 0) {
         this.newWordBeingAdded = true;
         this.currentWordIndex = 0;
         this.currentCharIndex = 0;
       }
-      this.saveWordList();
+      this.saveGameData();
     },
-    loadWords() {
-      const savedWordList = localStorage.getItem("leer-word-list");
-      const foundSavedWordList = savedWordList !== null;
+    loadGameData() {
+      const loadedData = localStorage.getItem("leer-data");
+      const dataWasFound = loadedData !== null;
 
-      if (foundSavedWordList) {
-        this.words = JSON.parse(savedWordList);
+      // Expected data structure:
+      // {
+      //   wordLists: [
+      //     {
+      //       name: 'Default',
+      //       words: ["Pa", "No", "Si", "Oso"],
+      //       mostRecentWordIndex: 0,
+      //     },
+      //   ],
+      //   gameSettings: {
+      //     case: "sentence", // upper, lower, sentence
+      //     // order: 'chronologial', // random
+      //   }, 
+      // } 
+
+      if (dataWasFound) {
+        const parsedData = JSON.parse(loadedData);
+        this.wordLists = parsedData.wordLists;
+        this.currentWordListWords = this.wordLists[0].words;
+        this.gameSettings = parsedData.gameSettings;
       } else {
-        this.words = this.defaultWords;
+        this.wordLists = [
+          {
+            name: 'Default',
+            words: ["Pa", "No", "Si", "Oso"],
+            mostRecentWordIndex: 0,
+          },
+        ];
       }
     },
-    saveWordList() {
-      localStorage.setItem("leer-word-list", JSON.stringify(this.words));
+    saveGameData() {
+      const gameData = {
+        wordLists: this.wordLists,
+        gameSettings: this.gameSettings, 
+      }
+      localStorage.setItem("leer-data", JSON.stringify(gameData));
     },
     getdocumentHeight() {
       const doc = document.documentElement
@@ -114,13 +151,13 @@ export default defineComponent({
     }
   },
   mounted: function () {
-    this.loadWords();
+    this.loadGameData();
     this.getdocumentHeight()
 
     window.addEventListener("keydown", (e) => {
       const letterIsCorrect =
         e.key.toLowerCase() ===
-        this.words[this.currentWordIndex][this.currentCharIndex]?.toLowerCase();
+        this.currentWordListWords[this.currentWordIndex][this.currentCharIndex]?.toLowerCase();
       if (this.wordCompleted) this.advanceWord();
       if (letterIsCorrect) this.advanceCharacter();
     });
@@ -153,7 +190,7 @@ export default defineComponent({
     @new-word-triggered="() => toggleNewWordComponent()"
     @word-removal-triggered="() => removeWord()"
     @new-word-selected="(incomingWordIndex: number) => changeWordToSelection(incomingWordIndex)"
-    :words="words"
+    :words="currentWordListWords"
     :currentWordIndex="currentWordIndex"
   />
   <Settings
