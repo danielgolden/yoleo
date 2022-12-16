@@ -2,17 +2,20 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  emits: ["newWordSelected", "delete-word"],
+  emits: ["newWordSelected", "deleteWord", "updateCurrentWordList", "updateWordListName"],
   data() {
     return {
-      open: true,
+      hidden: false,
       active: false,
       editMode: false,
-      wordListName: this.allStateData
     };
   },
   props: {
-    allStateData: Array,
+    wordList: Object,
+    wordListIndex: Number,
+    currentWordListIndex: Number,
+    currentWordIndex: Number,
+    isCurrentWordList: Boolean,
   },
   methods: {
     handleEditModeButton() {
@@ -20,49 +23,58 @@ export default defineComponent({
     },
     handleWordListNameContainerClick() {
       if (!this.editMode) {
-        this.open = !this.open;
+        this.hidden = !this.hidden;
+        this.$emit('updateCurrentWordList', this.wordListIndex);
       }
     },
     handleWordListNameChange(newName) {
-      this.allStateData.wordLists[this.allStateData.currentWordListIndex].name = newName
-    }
+      this.$emit('updateWordListName', { newName, wordListIndex: this.wordListIndex })
+      this.wordList.name = newName;
+    },
   },
+  computed: {
+    open() {
+      return this.isCurrentWordList && !this.hidden;
+    }
+  }
 });
 </script>
 
 <template>
-  <div
-    v-for="(wordList, wordListindex) in this.allStateData.wordLists"
-    class="word-list-container"
-  >
+  <div class="word-list-container">
     <div
       :class="{
         'word-list-name-container': true,
         'active-word-list-name-container':
-          this.allStateData.currentWordListIndex === wordListindex,
+          isCurrentWordList,
       }"
       @click="handleWordListNameContainerClick"
     >
       <h3
         :class="{
           'active-word-list-name':
-            this.allStateData.currentWordListIndex === wordListindex,
+            isCurrentWordList,
           'word-list-name': true,
         }"
         :contenteditable="editMode"
         @input="(e) => handleWordListNameChange((e.target as HTMLInputElement).innerText)"
         @keydown.enter="(e) => (e.target as HTMLInputElement).blur()"
       >
-        {{ wordList.name }}
+        {{ this.wordList.name }}
       </h3>
-      <button @click.stop="handleEditModeButton">Edit</button>
+      <button
+        v-if="isCurrentWordList"
+        @click.stop="handleEditModeButton"
+      >
+        Edit
+      </button>
     </div>
     <ul v-if="open" class="word-list">
       <li
-        v-for="(word, index) in wordList.words"
+        v-for="(word, index) in this.wordList.words"
         :class="{
           'word-list-item': true,
-          'active-word-list-item': index === this.allStateData.currentWordIndex,
+          'active-word-list-item': index === this.currentWordIndex,
         }"
         @click="$emit('newWordSelected', index)"
       >
@@ -70,7 +82,7 @@ export default defineComponent({
         <button
           v-if="this.editMode"
           class="delete-word-button"
-          @click.stop="$emit('delete-word', index)"
+          @click.stop="$emit('deleteWord', index)"
         >
           -
         </button>
@@ -126,6 +138,9 @@ export default defineComponent({
   font-size: 16px;
 }
 
+.word-list-name-container {
+  padding: 6px 8px;
+}
 .active-word-list-name-container {
   padding: 6px 8px;
   background-color: rgba(0 0 0 / 8%);

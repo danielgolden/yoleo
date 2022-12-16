@@ -3,13 +3,18 @@ import WordListing from "./components/WordListing.vue";
 import NewWord from "./components/NewWord.vue";
 import SuccessCelebration from "./components/SuccessCelebration.vue";
 import PrimaryNavigation from "./components/PrimaryNavigation.vue";
-import { defineComponent } from "vue";
+import { defineComponent, initCustomFormatter } from "vue";
 import { remove } from "@vue/shared";
 
 interface FormattingFunctions {
   lower: () => string;
   upper: () => string;
   sentence: () => string;
+}
+
+interface newWordListNameData {
+  newName: string,
+  wordListIndex: number
 }
 
 export default defineComponent({
@@ -158,6 +163,22 @@ export default defineComponent({
     getdocumentHeight() {
       const doc = document.documentElement
       doc.style.setProperty('--doc-height', `${window.innerHeight}px`)
+    },
+    createNewWordList() {
+      const emptyWordList = {
+        name: 'New group',
+        words: ["Example"],
+        mostRecentWordIndex: 0,
+      }
+
+      this.wordLists.push(emptyWordList);
+    },
+    updateCurrentWordListIndex(incomingWordListIndex: number) {
+      this.currentWordListIndex = incomingWordListIndex;
+    },
+    updateWordListName(newData: newWordListNameData) {
+      const { newName, wordListIndex } = newData;
+      this.wordLists[wordListIndex].name = newName
     }
   },
   mounted: function () {
@@ -184,7 +205,7 @@ export default defineComponent({
   },
   watch: {
     wordLists: {
-      handler(newValue, oldValue) {
+      handler() {
         this.saveGameData();
       },
       deep: true
@@ -200,6 +221,9 @@ export default defineComponent({
     @new-word-added="(incomingWord: string) => addNewWord(incomingWord)"
     @case-changed="(newValue: string) => setLetterCasing(newValue)"
     @delete-word="(wordIndex: number) => removeWord(wordIndex)"
+    @create-new-word-list="createNewWordList"
+    @update-current-word-list="(incomingWordListIndex: number) => updateCurrentWordListIndex(incomingWordListIndex)"
+    @update-word-list-name="(newData: newWordListNameData) => updateWordListName(newData)"
   />
   <SuccessCelebration v-if="wordCompleted" />
   <h1 class="current-word" v-if="!newWordBeingAdded && currentWord?.length > 0">

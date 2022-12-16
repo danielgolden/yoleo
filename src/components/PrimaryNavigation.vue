@@ -4,7 +4,7 @@ import NavigationWordList from "./NavigationWordList.vue";
 import Settings from "./Settings.vue";
 
 export default defineComponent({
-  emits: ["newWordSelected", "newWordAdded", "case-changed", "delete-word"],
+  emits: ["newWordSelected", "newWordAdded", "case-changed", "delete-word", "create-new-word-list"],
   data() {
     return {
       primaryNavigationActive: true,
@@ -25,6 +25,10 @@ export default defineComponent({
       this.$emit("newWordAdded", this.omniInputValue);
       this.omniInputValue = "";
     },
+    handleNewWordListClick() {
+      this.$emit('create-new-word-list');
+      // this.allStateData.wordLists[this.allStateData.wordLists.length - 1]
+    }
   },
 });
 </script>
@@ -40,14 +44,19 @@ export default defineComponent({
     />
     <navigation class="word-lists">
       <NavigationWordList
-        :allStateData="this.allStateData"
+        v-for="(wordList, index) in this.allStateData.wordLists"
+        :wordList="wordList"
+        :wordListIndex="index"
+        :currentWordListIndex="this.allStateData.currentWordListIndex"
+        :currentWordIndex="this.allStateData.currentWordIndex"
+        :isCurrentWordList="index === this.allStateData.currentWordListIndex"
         @new-word-selected="(incomingWordIndex: number) => $emit('newWordSelected', incomingWordIndex)"
         @delete-word="(wordIndex) => $emit('delete-word', wordIndex)"
-        v-on="this.$listeners"
+        v-bind="$attrs"
       />
     </navigation>
     <footer class="navigation-footer">
-      <button class="new-group-button">+ New group</button>
+      <button class="new-group-button" @click="handleNewWordListClick">+ New group</button>
       <Settings
         @case-changed="(newValue) => $emit('case-changed', newValue)"
         :currentSettings="this.allStateData.gameSettings"
