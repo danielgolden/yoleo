@@ -8,6 +8,7 @@ export default defineComponent({
       open: true,
       active: false,
       editMode: false,
+      wordListName: this.allStateData
     };
   },
   props: {
@@ -17,6 +18,14 @@ export default defineComponent({
     handleEditModeButton() {
       this.editMode = !this.editMode;
     },
+    handleWordListNameContainerClick() {
+      if (!this.editMode) {
+        this.open = !this.open;
+      }
+    },
+    handleWordListNameChange(newName) {
+      this.allStateData.wordLists[this.allStateData.currentWordListIndex].name = newName
+    }
   },
 });
 </script>
@@ -32,7 +41,7 @@ export default defineComponent({
         'active-word-list-name-container':
           this.allStateData.currentWordListIndex === wordListindex,
       }"
-      @click="open = !open"
+      @click="handleWordListNameContainerClick"
     >
       <h3
         :class="{
@@ -40,6 +49,9 @@ export default defineComponent({
             this.allStateData.currentWordListIndex === wordListindex,
           'word-list-name': true,
         }"
+        :contenteditable="editMode"
+        @input="(e) => handleWordListNameChange(e.target.innerText)"
+        @keydown.enter="(e) => e.target.blur()"
       >
         {{ wordList.name }}
       </h3>

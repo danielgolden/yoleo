@@ -182,6 +182,14 @@ export default defineComponent({
       this.saveGameData();
     }, 5000);
   },
+  watch: {
+    wordLists: {
+      handler(newValue, oldValue) {
+        this.saveGameData();
+      },
+      deep: true
+    }
+  }
 });
 </script>
 

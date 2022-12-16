@@ -42,7 +42,8 @@ export default defineComponent({
       <NavigationWordList
         :allStateData="this.allStateData"
         @new-word-selected="(incomingWordIndex: number) => $emit('newWordSelected', incomingWordIndex)"
-        @delete-word="(wordIndex) => $emit('delete-word', wordIndex)"   
+        @delete-word="(wordIndex) => $emit('delete-word', wordIndex)"
+        v-on="this.$listeners"
       />
     </navigation>
     <footer class="navigation-footer">
