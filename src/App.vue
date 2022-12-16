@@ -1,10 +1,10 @@
 <script lang="ts">
-import Settings from "./components/Settings.vue";
 import WordListing from "./components/WordListing.vue";
 import NewWord from "./components/NewWord.vue";
 import SuccessCelebration from "./components/SuccessCelebration.vue";
 import PrimaryNavigation from "./components/PrimaryNavigation.vue";
 import { defineComponent } from "vue";
+import { remove } from "@vue/shared";
 
 interface FormattingFunctions {
   lower: () => string;
@@ -95,8 +95,10 @@ export default defineComponent({
       this.currentWordIndex = incomingWordIndex;
       this.currentCharIndex = 0;
     },
-    removeWord() {
-      this.currentWordListWords.splice(this.currentWordIndex, 1);
+    removeWord(wordIndex: number) {
+      const indexOfWordToBeDeleted = wordIndex ?? this.currentWordIndex
+
+      this.currentWordListWords.splice(indexOfWordToBeDeleted, 1);
       if (this.currentWordListWords.length === 0) {
         this.newWordBeingAdded = true;
         this.currentWordIndex = 0;
@@ -188,6 +190,8 @@ export default defineComponent({
     :allStateData="$data" 
     @new-word-selected="(incomingWordIndex: number) => changeWordToSelection(incomingWordIndex)"
     @new-word-added="(incomingWord: string) => addNewWord(incomingWord)"
+    @case-changed="(newValue: string) => setLetterCasing(newValue)"
+    @delete-word="(wordIndex: number) => removeWord(wordIndex)"
   />
   <SuccessCelebration v-if="wordCompleted" />
   <h1 class="current-word" v-if="!newWordBeingAdded && currentWord?.length > 0">
@@ -213,10 +217,6 @@ export default defineComponent({
     @new-word-selected="(incomingWordIndex: number) => changeWordToSelection(incomingWordIndex)"
     :words="currentWordListWords"
     :currentWordIndex="currentWordIndex"
-  />
-  <Settings
-    @case-changed="(newValue: string) => setLetterCasing(newValue)"
-    :currentSettings="gameSettings"
   />
 </template>
 

@@ -2,15 +2,21 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  emits: ["newWordSelected"],
+  emits: ["newWordSelected", "delete-word"],
   data() {
     return {
       open: true,
-      active: false
+      active: false,
+      editMode: false,
     };
   },
   props: {
     allStateData: Array,
+  },
+  methods: {
+    handleEditModeButton() {
+      this.editMode = !this.editMode;
+    },
   },
 });
 </script>
@@ -37,7 +43,7 @@ export default defineComponent({
       >
         {{ wordList.name }}
       </h3>
-      <button>Edit</button>
+      <button @click.stop="handleEditModeButton">Edit</button>
     </div>
     <ul v-if="open" class="word-list">
       <li
@@ -49,6 +55,13 @@ export default defineComponent({
         @click="$emit('newWordSelected', index)"
       >
         {{ word }}
+        <button
+          v-if="this.editMode"
+          class="delete-word-button"
+          @click.stop="$emit('delete-word', index)"
+        >
+          -
+        </button>
       </li>
     </ul>
   </div>
@@ -78,6 +91,8 @@ export default defineComponent({
 }
 
 .word-list-item {
+  display: flex;
+  justify-content: space-between;
   padding: 6px 8px;
   border-radius: 4px;
   cursor: pointer;
@@ -112,5 +127,15 @@ export default defineComponent({
   padding-inline: 8px;
   padding: 0;
   list-style-type: none;
+}
+
+.delete-word-button {
+  border-radius: 50%;
+  border: none;
+  background-color: red;
+  width: 19px;
+  height: 19px;
+  color: #fff;
+  font-weight: 700;
 }
 </style>

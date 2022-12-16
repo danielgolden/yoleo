@@ -1,13 +1,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import NavigationWordList from './NavigationWordList.vue';
+import NavigationWordList from "./NavigationWordList.vue";
+import Settings from "./Settings.vue";
 
 export default defineComponent({
-  emits: ["newWordSelected", "newWordAdded"],
+  emits: ["newWordSelected", "newWordAdded", "case-changed", "delete-word"],
   data() {
     return {
       primaryNavigationActive: true,
-      omniInputValue: ''
+      omniInputValue: "",
     };
   },
   props: {
@@ -21,21 +22,37 @@ export default defineComponent({
   },
   methods: {
     submitNewWord(newWord: string) {
-      this.$emit('newWordAdded', this.omniInputValue);
-      this.omniInputValue = '';
-    }
-  }
+      this.$emit("newWordAdded", this.omniInputValue);
+      this.omniInputValue = "";
+    },
+  },
 });
 </script>
 
 <template>
-  <div v-if="primaryNavigationActive" class="primary-navigation">
-    <input v-model="omniInputValue" type="search" class="omni-input" placeholder="Search or add a new word..." @keydown.enter="this.submitNewWord()"/>
+  <section v-if="primaryNavigationActive" class="primary-navigation">
+    <input
+      v-model="omniInputValue"
+      type="search"
+      class="omni-input"
+      placeholder="Search or add a new word..."
+      @keydown.enter="this.submitNewWord()"
+    />
     <navigation class="word-lists">
-      <NavigationWordList :allStateData="this.allStateData" @new-word-selected="(incomingWordIndex: number) => $emit('newWordSelected', incomingWordIndex)" />
+      <NavigationWordList
+        :allStateData="this.allStateData"
+        @new-word-selected="(incomingWordIndex: number) => $emit('newWordSelected', incomingWordIndex)"
+        @delete-word="(wordIndex) => $emit('delete-word', wordIndex)"   
+      />
     </navigation>
-    <button class="new-group-button">+ New group</button>
-  </div>
+    <footer class="navigation-footer">
+      <button class="new-group-button">+ New group</button>
+      <Settings
+        @case-changed="(newValue) => $emit('case-changed', newValue)"
+        :currentSettings="this.allStateData.gameSettings"
+      />
+    </footer>
+  </section>
 </template>
 
 <style scoped>
@@ -48,17 +65,24 @@ export default defineComponent({
   top: 0;
   bottom: 0;
   left: 0;
-  padding: 16px;
   background-color: rgba(0 0 0 / 8%);
+  z-index: 10;
 }
 
 .omni-input {
+  margin: 16px;
+  margin-bottom: 0;
   border: none;
   box-shadow: 0 0 0 1px rgba(0 0 0 / 10%), inset 0 2px 0 rgba(0 0 0 / 2%);
   border-radius: 4px;
   padding: 10px 8px;
-  width: 100%;
   font-size: 16px;
+}
+
+.word-lists {
+  margin-inline: 16px;
+  flex-grow: 1;
+  overflow: scroll;
 }
 
 .word-list-item {
@@ -100,11 +124,16 @@ export default defineComponent({
 
 .new-group-button {
   border: none;
+  padding: 14px 16px;
   background-color: transparent;
   font-size: 16px;
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
   color: rgba(0 0 0 / 65%);
+}
+
+.navigation-footer {
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

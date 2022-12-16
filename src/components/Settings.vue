@@ -45,17 +45,17 @@ export default defineComponent({
 
 <style scoped>
 .game-settings-trigger {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  padding: 10px;
+  display: grid;
+  place-items: center;
+  padding: 14px 16px;
   border: none;
   background-color: transparent;
   cursor: pointer;
+  scale: .9;
 }
 
 .game-settings-trigger svg {
-  stroke: rgb(0 0 0 / 50%);
+  stroke: rgb(0 0 0 / 45%);
 }
 
 .game-settings {
