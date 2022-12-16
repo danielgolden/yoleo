@@ -3,6 +3,7 @@ import Settings from "./components/Settings.vue";
 import WordListing from "./components/WordListing.vue";
 import NewWord from "./components/NewWord.vue";
 import SuccessCelebration from "./components/SuccessCelebration.vue";
+import PrimaryNavigation from "./components/PrimaryNavigation.vue";
 import { defineComponent } from "vue";
 
 interface FormattingFunctions {
@@ -85,7 +86,6 @@ export default defineComponent({
       this.currentWordListWords.push(incomingWord);
       this.currentWordIndex = this.currentWordListWords.length - 1;
       this.currentCharIndex = 0;
-      this.toggleNewWordComponent();
       this.saveGameData();
     },
     toggleNewWordComponent() {
@@ -162,6 +162,10 @@ export default defineComponent({
     this.loadGameData();
     this.getdocumentHeight()
 
+    if (this.currentWordListWords.length <= this.currentWordIndex) {
+      this.currentWordIndex = 0;
+    }
+
     window.addEventListener("keydown", (e) => {
       const letterIsCorrect =
         e.key.toLowerCase() ===
@@ -180,6 +184,11 @@ export default defineComponent({
 </script>
 
 <template>
+  <PrimaryNavigation 
+    :allStateData="$data" 
+    @new-word-selected="(incomingWordIndex: number) => changeWordToSelection(incomingWordIndex)"
+    @new-word-added="(incomingWord: string) => addNewWord(incomingWord)"
+  />
   <SuccessCelebration v-if="wordCompleted" />
   <h1 class="current-word" v-if="!newWordBeingAdded && currentWord?.length > 0">
     <span
