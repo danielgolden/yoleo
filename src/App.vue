@@ -95,7 +95,7 @@ export default defineComponent({
       this.currentWordIndex = incomingWordIndex;
       this.currentCharIndex = 0;
     },
-    removeWord(wordIndex: number) {
+    removeWord(wordIndex?: number) {
       const indexOfWordToBeDeleted = wordIndex ?? this.currentWordIndex
 
       this.currentWordListWords.splice(indexOfWordToBeDeleted, 1);
