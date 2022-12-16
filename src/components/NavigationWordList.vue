@@ -50,8 +50,8 @@ export default defineComponent({
           'word-list-name': true,
         }"
         :contenteditable="editMode"
-        @input="(e) => handleWordListNameChange(e.target.innerText)"
-        @keydown.enter="(e) => e.target.blur()"
+        @input="(e) => handleWordListNameChange((e.target as HTMLInputElement).innerText)"
+        @keydown.enter="(e) => (e.target as HTMLInputElement).blur()"
       >
         {{ wordList.name }}
       </h3>
