@@ -154,7 +154,7 @@ export default defineComponent({
     updateCurrentWordListIndex(incomingWordListIndex: number) {
       this.currentWordListIndex = incomingWordListIndex;
     },
-    updateWordListName(newData: newWordListNameData) {
+    updatewordListHeader(newData: newwordListHeaderData) {
       const { newName, wordListIndex } = newData;
       this.wordLists[wordListIndex].name = newName
     }
@@ -216,7 +216,7 @@ export default defineComponent({
     @delete-word="(wordIndex: number) => removeWord(wordIndex)"
     @create-new-word-list="createNewWordList"
     @update-current-word-list="(incomingWordListIndex: number) => updateCurrentWordListIndex(incomingWordListIndex)"
-    @update-word-list-name="(newData: newWordListNameData) => updateWordListName(newData)"
+    @update-word-list-name="(newData: newwordListHeaderData) => updatewordListHeader(newData)"
   />
   <SuccessCelebration v-if="wordCompleted" />
   <h1 :class="{'current-word': true, 'current-word-completed': wordCompleted}" v-if="currentWord?.length > 0">

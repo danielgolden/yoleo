@@ -163,6 +163,9 @@ hr {
 }
 
 .word-lists {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
   margin-inline: 16px;
   flex-grow: 1;
   overflow: scroll;

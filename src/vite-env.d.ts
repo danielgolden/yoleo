@@ -11,7 +11,7 @@ interface FormattingFunctions {
   sentence: () => string;
 }
 
-interface newWordListNameData {
+interface newwordListHeaderData {
   newName: string,
   wordListIndex: number
 }
