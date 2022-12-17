@@ -18,7 +18,7 @@ export default defineComponent({
   mounted: function () {
     window.addEventListener("keydown", (e) => {
       const slashWasPressed = e.key === "/";
-      if (slashWasPressed && this.$refs.omniInput !== document.activeElement) this.open = !this.open;
+      if (slashWasPressed) this.open = !this.open;
     });
   },
   methods: {
@@ -38,6 +38,11 @@ export default defineComponent({
         setTimeout(() => {
           omniInput.focus();
         }, 100)
+      }
+
+      if (!newValue) {
+        this.omniInputValue = '';
+        omniInput.blur();
       }
     }
   }
@@ -64,6 +69,7 @@ export default defineComponent({
     <navigation class="word-lists">
       <NavigationWordList
         v-for="(wordList, index) in this.allStateData.wordLists"
+        :key="wordList"
         :wordList="wordList"
         :wordListIndex="index"
         :currentWordListIndex="this.allStateData.currentWordListIndex"

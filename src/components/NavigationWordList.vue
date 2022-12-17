@@ -22,8 +22,9 @@ export default defineComponent({
       this.editMode = !this.editMode;
     },
     handleWordListNameContainerClick() {
+      console.log('currentWordListIndex:', this.currentWordListIndex); 
       if (!this.editMode) {
-        this.hidden = !this.hidden;
+        this.hidden = this.isCurrentWordList && !this.hidden;
         this.$emit('updateCurrentWordList', this.wordListIndex);
       }
     },
@@ -87,6 +88,7 @@ export default defineComponent({
           'active-word-list-item': index === this.currentWordIndex,
         }"
         @click="$emit('newWordSelected', index)"
+        :key="`${word}${index}`"
       >
         <div class="word-list-item-and-indicator-container">
           <span class="word-state-indicator"></span>

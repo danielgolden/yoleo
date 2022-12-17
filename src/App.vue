@@ -228,7 +228,7 @@ export default defineComponent({
   <h1 class="current-word" v-if="!newWordBeingAdded && currentWord?.length > 0">
     <span
       v-for="char in currentWord.length"
-      v-bind:key="currentWord"
+      :key="char"
       :class="{
         'highlighted-char': char <= currentCharIndex,
         'word-character': true,
