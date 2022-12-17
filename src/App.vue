@@ -50,6 +50,9 @@ export default defineComponent({
         this.gameSettings.case as keyof FormattingFunctions
       ]();
     },
+    lastWordInListIsActive() {
+      return this.currentWordIndex === this.currentWordListWords.length - 1
+    }
   },
   methods: {
     advanceCharacter() {
@@ -62,11 +65,19 @@ export default defineComponent({
     },
     advanceWord() {
       // Move the word forward one character
-      const lastWordInListIsActive = this.currentWordIndex === this.currentWordListWords.length - 1;
-      if (lastWordInListIsActive) {
+      if (this.lastWordInListIsActive) {
         this.currentWordIndex = 0;
       } else {
         this.currentWordIndex++;
+      }
+
+      this.currentCharIndex = 0;
+      this.wordCompleted = false;
+    },
+    regressWord() {
+      // Move the word forward one character
+      if (this.currentWordIndex !== 0) {
+        this.currentWordIndex--;
       }
 
       this.currentCharIndex = 0;
@@ -189,10 +200,10 @@ export default defineComponent({
         this.wordCompleted = true;
       }
 
-      if (e.code === 'ArrowRight') {
-        this.currentWordIndex++
-      } else if (e.code === "ArrowLeft") {
-        this.currentWordIndex--
+      if (e.code === 'ArrowRight' || e.code === 'ArrowDown') {
+        this.advanceWord()
+      } else if (e.code === "ArrowLeft" || e.code === 'ArrowUp') {
+        this.regressWord();
       }
     });
 
