@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   emits: ["newWordSelected", "deleteWord", "updateCurrentWordList", "updateWordListName"],
@@ -11,7 +11,7 @@ export default defineComponent({
     };
   },
   props: {
-    wordList: Object,
+    wordList: {type: Object as PropType<WordList>, required: true},
     wordListIndex: Number,
     currentWordListIndex: Number,
     currentWordIndex: Number,
@@ -28,9 +28,9 @@ export default defineComponent({
         this.$emit('updateCurrentWordList', this.wordListIndex);
       }
     },
-    handleWordListNameChange(newName) {
+    handleWordListNameChange(newName: string) {
       this.$emit('updateWordListName', { newName, wordListIndex: this.wordListIndex })
-      this.wordList.name = newName;
+      if (this.wordList) this.wordList.name = newName;
     },
   },
   computed: {
@@ -67,7 +67,7 @@ export default defineComponent({
           <path v-if="!open" fill-rule="evenodd" clip-rule="evenodd" d="M1.75 0C1.28587 0 0.840752 0.18437 0.512563 0.51256C0.184374 0.84075 0 1.28587 0 1.75V12.25C0 13.216 0.784 14 1.75 14H14.25C14.7141 14 15.1592 13.8156 15.4874 13.4874C15.8156 13.1592 16 12.7141 16 12.25V3.75C16 3.28587 15.8156 2.84075 15.4874 2.51256C15.1592 2.18437 14.7141 2 14.25 2H7.75C7.71119 2 7.67291 1.99096 7.6382 1.97361C7.60348 1.95625 7.57329 1.93105 7.55 1.9L6.65 0.7C6.32 0.26 5.8 0 5.25 0H1.75Z" :fill="isCurrentWordList ? '#9FC7F8' : '#BDC1C5'"/>
         </svg>
 
-        {{ this.wordList.name }}
+        {{ wordList && wordList.name }}
       </h3>
       <button
         v-if="isCurrentWordList"
@@ -82,10 +82,10 @@ export default defineComponent({
     </div>
     <ul v-if="open" class="word-list">
       <li
-        v-for="(word, index) in this.wordList.words"
+        v-for="(word, index) in wordList.words"
         :class="{
           'word-list-item': true,
-          'active-word-list-item': index === this.currentWordIndex,
+          'active-word-list-item': index === currentWordIndex,
         }"
         @click="$emit('newWordSelected', index)"
         :key="`${word}${index}`"
@@ -95,7 +95,7 @@ export default defineComponent({
           {{ word }}
         </div>
         <button
-          v-if="this.editMode"
+          v-if="editMode"
           class="delete-word-button"
           @click.stop="$emit('deleteWord', index)"
         >

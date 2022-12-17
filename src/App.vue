@@ -5,17 +5,6 @@ import PrimaryNavigation from "./components/PrimaryNavigation.vue";
 import { defineComponent, initCustomFormatter } from "vue";
 import { remove } from "@vue/shared";
 
-interface FormattingFunctions {
-  lower: () => string;
-  upper: () => string;
-  sentence: () => string;
-}
-
-interface newWordListNameData {
-  newName: string,
-  wordListIndex: number
-}
-
 export default defineComponent({
   data() {
     return {
@@ -189,11 +178,22 @@ export default defineComponent({
     }
 
     window.addEventListener("keydown", (e) => {
-      const letterIsCorrect =
-        e.key.toLowerCase() ===
-        this.currentWordListWords[this.currentWordIndex][this.currentCharIndex]?.toLowerCase();
-      if (this.wordCompleted) this.advanceWord();
-      if (letterIsCorrect) this.advanceCharacter();
+      // Listen for correct keystrokes
+      // const letterIsCorrect =
+      //   e.key.toLowerCase() ===
+      //   this.currentWordListWords[this.currentWordIndex][this.currentCharIndex]?.toLowerCase();
+      // if (this.wordCompleted) this.advanceWord();
+      // if (letterIsCorrect) this.advanceCharacter();
+
+      if (e.code == 'Enter' && e.metaKey) {
+        this.wordCompleted = true;
+      }
+
+      if (e.code === 'ArrowRight') {
+        this.currentWordIndex++
+      } else if (e.code === "ArrowLeft") {
+        this.currentWordIndex--
+      }
     });
 
     window.addEventListener('resize', this.getdocumentHeight);
@@ -208,6 +208,9 @@ export default defineComponent({
         this.saveGameData();
       },
       deep: true
+    },
+    currentWordIndex() {
+      this.wordCompleted = false;
     }
   }
 });
@@ -216,6 +219,7 @@ export default defineComponent({
 <template>
   <PrimaryNavigation 
     :allStateData="$data" 
+
     @new-word-selected="(incomingWordIndex: number) => changeWordToSelection(incomingWordIndex)"
     @new-word-added="(incomingWord: string) => addNewWord(incomingWord)"
     @case-changed="(newValue: string) => setLetterCasing(newValue)"
@@ -225,7 +229,7 @@ export default defineComponent({
     @update-word-list-name="(newData: newWordListNameData) => updateWordListName(newData)"
   />
   <SuccessCelebration v-if="wordCompleted" />
-  <h1 class="current-word" v-if="!newWordBeingAdded && currentWord?.length > 0">
+  <h1 :class="{'current-word': true, 'current-word-completed': wordCompleted}" v-if="!newWordBeingAdded && currentWord?.length > 0">
     <span
       v-for="char in currentWord.length"
       :key="char"
@@ -250,8 +254,7 @@ export default defineComponent({
   font-size: 15vw;
   z-index: 1;
 }
-
-.highlighted-char {
+.highlighted-char, .current-word-completed {
   color: #1dad08;
 }
 

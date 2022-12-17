@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import NavigationWordList from "./NavigationWordList.vue";
 import Settings from "./Settings.vue";
 
@@ -13,7 +13,7 @@ export default defineComponent({
     };
   },
   props: {
-    allStateData: Array,
+    allStateData: { type: Object as PropType<AllStateData>, required: true},
   },
   mounted: function () {
     window.addEventListener("keydown", (e) => {
@@ -22,7 +22,7 @@ export default defineComponent({
     });
   },
   methods: {
-    submitNewWord(newWord: string) {
+    submitNewWord(newWord?: string) {
       this.$emit("newWordAdded", this.omniInputValue);
       this.omniInputValue = "";
     },
@@ -33,7 +33,7 @@ export default defineComponent({
   },
   watch: {
     open(newValue) {
-      const omniInput = this.$refs.omniInput;
+      const omniInput = (this.$refs.omniInput as HTMLElement);
       if (newValue) {
         setTimeout(() => {
           omniInput.focus();
@@ -62,21 +62,21 @@ export default defineComponent({
       type="search"
       class="omni-input"
       placeholder="Search or add a new word..."
-      @keydown.enter="this.submitNewWord()"
+      @keydown.enter="submitNewWord()"
       ref="omniInput"
     />
     <hr>
     <navigation class="word-lists">
       <NavigationWordList
-        v-for="(wordList, index) in this.allStateData.wordLists"
+        v-for="(wordList, index) in allStateData.wordLists"
         :key="wordList"
         :wordList="wordList"
         :wordListIndex="index"
-        :currentWordListIndex="this.allStateData.currentWordListIndex"
-        :currentWordIndex="this.allStateData.currentWordIndex"
-        :isCurrentWordList="index === this.allStateData.currentWordListIndex"
+        :currentWordListIndex="allStateData.currentWordListIndex"
+        :currentWordIndex="allStateData.currentWordIndex"
+        :isCurrentWordList="index === allStateData.currentWordListIndex"
         @new-word-selected="(incomingWordIndex: number) => $emit('newWordSelected', incomingWordIndex)"
-        @delete-word="(wordIndex) => $emit('delete-word', wordIndex)"
+        @delete-word="(wordIndex: number) => $emit('delete-word', wordIndex)"
         v-bind="$attrs"
       />
     </navigation>
@@ -88,8 +88,8 @@ export default defineComponent({
         New group
       </button>
       <Settings
-        @case-changed="(newValue) => $emit('case-changed', newValue)"
-        :currentSettings="this.allStateData.gameSettings"
+        @case-changed="(newValue: string) => $emit('case-changed', newValue)"
+        :currentSettings="allStateData.gameSettings"
       />
     </footer>
   </section>
