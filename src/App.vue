@@ -1,5 +1,4 @@
 <script lang="ts">
-import NewWord from "./components/NewWord.vue";
 import SuccessCelebration from "./components/SuccessCelebration.vue";
 import PrimaryNavigation from "./components/PrimaryNavigation.vue";
 import { defineComponent, initCustomFormatter } from "vue";
@@ -24,7 +23,6 @@ export default defineComponent({
         // order: 'chronologial', // random
         // wordLength
       },
-      newWordBeingAdded: false,
     };
   },
   computed: {
@@ -92,9 +90,6 @@ export default defineComponent({
       this.currentCharIndex = 0;
       this.saveGameData();
     },
-    toggleNewWordComponent() {
-      this.newWordBeingAdded = !this.newWordBeingAdded;
-    },
     changeWordToSelection(incomingWordIndex: number) {
       this.currentWordIndex = incomingWordIndex;
       this.currentCharIndex = 0;
@@ -104,7 +99,6 @@ export default defineComponent({
 
       this.currentWordListWords.splice(indexOfWordToBeDeleted, 1);
       if (this.currentWordListWords.length === 0) {
-        this.newWordBeingAdded = true;
         this.currentWordIndex = 0;
         this.currentCharIndex = 0;
       }
@@ -113,21 +107,6 @@ export default defineComponent({
     loadGameData() {
       const loadedData = localStorage.getItem("leer-data");
       const dataWasFound = loadedData !== null;
-
-      // Expected data structure:
-      // {
-      //   wordLists: [
-      //     {
-      //       name: 'Default',
-      //       words: ["Pa", "No", "Si", "Oso"],
-      //       mostRecentWordIndex: 0,
-      //     },
-      //   ],
-      //   gameSettings: {
-      //     case: "sentence", // upper, lower, sentence
-      //     // order: 'chronologial', // random
-      //   }, 
-      // } 
 
       if (dataWasFound) {
         const parsedData = JSON.parse(loadedData);
@@ -240,7 +219,7 @@ export default defineComponent({
     @update-word-list-name="(newData: newWordListNameData) => updateWordListName(newData)"
   />
   <SuccessCelebration v-if="wordCompleted" />
-  <h1 :class="{'current-word': true, 'current-word-completed': wordCompleted}" v-if="!newWordBeingAdded && currentWord?.length > 0">
+  <h1 :class="{'current-word': true, 'current-word-completed': wordCompleted}" v-if="currentWord?.length > 0">
     <span
       v-for="char in currentWord.length"
       :key="char"
@@ -251,12 +230,6 @@ export default defineComponent({
       >{{ currentWordFormatted[char - 1] }}</span
     >
   </h1>
-
-  <NewWord
-    @hide-new-word-view="toggleNewWordComponent()"
-    v-if="newWordBeingAdded"
-    @new-word-submitted="(incomingWord: string) => addNewWord(incomingWord)"
-  />
 </template>
 
 <style scoped>

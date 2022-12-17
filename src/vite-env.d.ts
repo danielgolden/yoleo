@@ -27,5 +27,4 @@ interface AllStateData {
   currentCharIndex: number;
   wordCompleted: boolean;
   gameSettings: GameSettings;
-  newWordBeingAdded: boolean;
 }

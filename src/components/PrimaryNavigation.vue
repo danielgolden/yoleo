@@ -22,9 +22,11 @@ export default defineComponent({
     });
   },
   methods: {
-    submitNewWord(newWord?: string) {
-      this.$emit("newWordAdded", this.omniInputValue);
-      this.omniInputValue = "";
+    submitNewWord() {
+      if (this.omniInputValue !== '') {
+        this.$emit("newWordAdded", this.omniInputValue);
+        this.omniInputValue = "";
+      }
     },
     handleNewWordListClick() {
       this.$emit('create-new-word-list');
@@ -59,7 +61,7 @@ export default defineComponent({
     </button>
     <input
       v-model="omniInputValue"
-      type="search"
+      type="text"
       class="omni-input"
       placeholder="Search or add a new word..."
       @keydown.enter="submitNewWord()"
@@ -145,7 +147,11 @@ export default defineComponent({
 }
 
 .omni-input:focus {
-  outline: 2px solid #216DDF;
+  box-shadow: 
+    0px 3px 5px rgba(0, 0, 0, 0.05), 
+    0px 1px 2px rgba(0, 0, 0, 0.05),
+    0 0 0 2px #216DDF;
+  outline: none;
 }
 
 hr {
