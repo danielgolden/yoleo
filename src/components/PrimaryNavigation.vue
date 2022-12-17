@@ -63,7 +63,7 @@ export default defineComponent({
       v-model="omniInputValue"
       type="text"
       class="omni-input"
-      placeholder="Search or add a new word..."
+      placeholder="Add a new word..."
       @keydown.enter="submitNewWord()"
       ref="omniInput"
     />
@@ -137,13 +137,13 @@ export default defineComponent({
   margin: 16px;
   margin-bottom: 0;
   border: none;
-  padding: 13px 8px 11px 37px;
+  padding: 13px 8px 11px 32px;
   font-size: 14px;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
-  background-image: url('../assets/icon-search.svg');
+  background-image: url('../assets/icon-plus.svg');
   background-repeat: no-repeat;
-  background-position: 15px 13px;
+  background-position: 13px 14px;
 }
 
 .omni-input:focus {
