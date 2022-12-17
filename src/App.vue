@@ -1,8 +1,8 @@
 <script lang="ts">
 import SuccessCelebration from "./components/SuccessCelebration.vue";
 import PrimaryNavigation from "./components/PrimaryNavigation.vue";
-import { defineComponent, initCustomFormatter } from "vue";
-import { remove } from "@vue/shared";
+import celebrationSound from './assets/celebration-sound.mp3';
+import { defineComponent } from "vue";
 
 export default defineComponent({
   data() {
@@ -23,6 +23,7 @@ export default defineComponent({
         // order: 'chronologial', // random
         // wordLength
       },
+      celebrationAudio: new Audio(celebrationSound)
     };
   },
   computed: {
@@ -161,7 +162,8 @@ export default defineComponent({
   },
   mounted: function () {
     this.loadGameData();
-    this.getdocumentHeight()
+    this.getdocumentHeight();
+    this.celebrationAudio.preload
 
     if (this.currentWordListWords.length <= this.currentWordIndex) {
       this.currentWordIndex = 0;
@@ -218,7 +220,7 @@ export default defineComponent({
     @update-current-word-list="(incomingWordListIndex: number) => updateCurrentWordListIndex(incomingWordListIndex)"
     @update-word-list-name="(newData: newwordListHeaderData) => updatewordListHeader(newData)"
   />
-  <SuccessCelebration v-if="wordCompleted" />
+  <SuccessCelebration v-if="wordCompleted" :celebrationAudio="celebrationAudio" />
   <h1 :class="{'current-word': true, 'current-word-completed': wordCompleted}" v-if="currentWord?.length > 0">
     <span
       v-for="char in currentWord.length"

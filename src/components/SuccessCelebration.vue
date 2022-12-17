@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import ConfettiExplosion from "vue-confetti-explosion";
-import celebrationSound from '../assets/celebration-sound.mp3';
 
 export default defineComponent({
   data() {
@@ -9,21 +8,27 @@ export default defineComponent({
       windowSize: {
         width: 1000,
         height: 1000
-      }
+      },
+      confettiActive: false
     };
   },
+  props: {
+    celebrationAudio: { type: HTMLAudioElement, required: true }
+  },
   mounted: function () {
+    this.celebrationAudio.play();
     this.windowSize.width = window.innerWidth - 100;
     this.windowSize.height = window.innerHeight;
 
-    const audio = new Audio(celebrationSound);
-    audio.play();
+    setTimeout(() => {
+      this.confettiActive = true;
+    }, 100)
   },
 });
 </script>
 
 <template>
-  <ConfettiExplosion :stageWidth="windowSize.width" :stageHeight="windowSize.height" />
+  <ConfettiExplosion v-if="confettiActive" :stageWidth="windowSize.width" :stageHeight="windowSize.height" />
 </template>
 
 <style scoped>
