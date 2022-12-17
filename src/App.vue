@@ -1,5 +1,4 @@
 <script lang="ts">
-import WordListing from "./components/WordListing.vue";
 import NewWord from "./components/NewWord.vue";
 import SuccessCelebration from "./components/SuccessCelebration.vue";
 import PrimaryNavigation from "./components/PrimaryNavigation.vue";
@@ -242,13 +241,6 @@ export default defineComponent({
     @hide-new-word-view="toggleNewWordComponent()"
     v-if="newWordBeingAdded"
     @new-word-submitted="(incomingWord: string) => addNewWord(incomingWord)"
-  />
-  <WordListing
-    @new-word-triggered="() => toggleNewWordComponent()"
-    @word-removal-triggered="() => removeWord()"
-    @new-word-selected="(incomingWordIndex: number) => changeWordToSelection(incomingWordIndex)"
-    :words="currentWordListWords"
-    :currentWordIndex="currentWordIndex"
   />
 </template>
 

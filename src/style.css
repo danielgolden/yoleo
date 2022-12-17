@@ -24,3 +24,7 @@ body {
 button {
   cursor: pointer;
 }
+
+input::placeholder {
+  color: #9A9EA4;
+}
