@@ -28,3 +28,10 @@ interface AllStateData {
   wordCompleted: boolean;
   gameSettings: GameSettings;
 }
+
+interface WordListReviewUnitWord {
+  id: string; // Change this to a UUID
+  text: string;
+  reviewed: boolean;
+  successful: boolean;
+}

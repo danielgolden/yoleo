@@ -1,15 +1,18 @@
 <script lang="ts">
 import SuccessCelebration from "./components/SuccessCelebration.vue";
 import PrimaryNavigation from "./components/PrimaryNavigation.vue";
-import celebrationSound from './assets/celebration-sound.mp3';
+import celebrationSound from "./assets/celebration-sound.mp3";
+import wordListReviewUnit from "./wordListReviewUnit";
+import { store } from "./store";
 import { defineComponent } from "vue";
+import { v4 as uuidv4 } from "uuid";
 
 export default defineComponent({
   data() {
     return {
       wordLists: [
         {
-          name: 'Default',
+          name: "Default",
           words: ["Pa", "No", "Si", "Oso"],
           mostRecentWordIndex: 0,
         },
@@ -23,15 +26,20 @@ export default defineComponent({
         // order: 'chronologial', // random
         // wordLength
       },
-      celebrationAudio: new Audio(celebrationSound)
+      celebrationAudio: new Audio(celebrationSound),
+      wordListReviewUnitIsActive: false,
+      currentWordListReviewUnit: new wordListReviewUnit(["default"]),
+      store,
     };
   },
   computed: {
-    currentWordListWords() {
+    currentWordListWords(): string[] {
       return this.wordLists[this.currentWordListIndex].words;
     },
     currentWord() {
-      return this.wordLists[this.currentWordListIndex].words[this.currentWordIndex];
+      return this.wordLists[this.currentWordListIndex].words[
+        this.currentWordIndex
+      ];
     },
     currentChar() {
       return this.currentWord[this.currentCharIndex];
@@ -50,8 +58,8 @@ export default defineComponent({
       ]();
     },
     lastWordInListIsActive() {
-      return this.currentWordIndex === this.currentWordListWords.length - 1
-    }
+      return this.currentWordIndex === this.currentWordListWords.length - 1;
+    },
   },
   methods: {
     advanceCharacter() {
@@ -96,7 +104,7 @@ export default defineComponent({
       this.currentCharIndex = 0;
     },
     removeWord(wordIndex?: number) {
-      const indexOfWordToBeDeleted = wordIndex ?? this.currentWordIndex
+      const indexOfWordToBeDeleted = wordIndex ?? this.currentWordIndex;
 
       this.currentWordListWords.splice(indexOfWordToBeDeleted, 1);
       if (this.currentWordListWords.length === 0) {
@@ -120,7 +128,7 @@ export default defineComponent({
       } else {
         this.wordLists = [
           {
-            name: 'Default',
+            name: "Default",
             words: ["Pa", "No", "Si", "Oso"],
             mostRecentWordIndex: 0,
           },
@@ -134,21 +142,21 @@ export default defineComponent({
         gameSettings: this.gameSettings,
         gameState: {
           currentWordListIndex: this.currentWordListIndex,
-          currentWordIndex: this.currentWordIndex
-        }
-      }
+          currentWordIndex: this.currentWordIndex,
+        },
+      };
       localStorage.setItem("leer-data", JSON.stringify(gameData));
     },
     getdocumentHeight() {
-      const doc = document.documentElement
-      doc.style.setProperty('--doc-height', `${window.innerHeight}px`)
+      const doc = document.documentElement;
+      doc.style.setProperty("--doc-height", `${window.innerHeight}px`);
     },
     createNewWordList() {
       const emptyWordList = {
-        name: 'New group',
+        name: "New group",
         words: ["Example"],
         mostRecentWordIndex: 0,
-      }
+      };
 
       this.wordLists.push(emptyWordList);
     },
@@ -157,13 +165,19 @@ export default defineComponent({
     },
     updatewordListHeader(newData: newwordListHeaderData) {
       const { newName, wordListIndex } = newData;
-      this.wordLists[wordListIndex].name = newName
-    }
+      this.wordLists[wordListIndex].name = newName;
+    },
+    newWordListReviewUnit() {
+      this.currentWordListReviewUnit = new wordListReviewUnit(
+        this.currentWordListWords
+      );
+    },
   },
   mounted: function () {
     this.loadGameData();
     this.getdocumentHeight();
-    this.celebrationAudio.preload
+    this.celebrationAudio.preload;
+    this.newWordListReviewUnit();
 
     if (this.currentWordListWords.length <= this.currentWordIndex) {
       this.currentWordIndex = 0;
@@ -177,18 +191,18 @@ export default defineComponent({
       // if (this.wordCompleted) this.advanceWord();
       // if (letterIsCorrect) this.advanceCharacter();
 
-      if (e.code == 'Enter' && e.metaKey) {
+      if (e.code == "Enter" && e.metaKey) {
         this.wordCompleted = true;
       }
 
-      if (e.code === 'ArrowRight' || e.code === 'ArrowDown') {
-        this.advanceWord()
-      } else if (e.code === "ArrowLeft" || e.code === 'ArrowUp') {
+      if (e.code === "ArrowRight" || e.code === "ArrowDown") {
+        this.advanceWord();
+      } else if (e.code === "ArrowLeft" || e.code === "ArrowUp") {
         this.regressWord();
       }
     });
 
-    window.addEventListener('resize', this.getdocumentHeight);
+    window.addEventListener("resize", this.getdocumentHeight);
 
     setInterval(() => {
       this.saveGameData();
@@ -199,19 +213,18 @@ export default defineComponent({
       handler() {
         this.saveGameData();
       },
-      deep: true
+      deep: true,
     },
     currentWordIndex() {
       this.wordCompleted = false;
-    }
-  }
+    },
+  },
 });
 </script>
 
 <template>
-  <PrimaryNavigation 
-    :allStateData="$data" 
-
+  <PrimaryNavigation
+    :allStateData="$data"
     @new-word-selected="(incomingWordIndex: number) => changeWordToSelection(incomingWordIndex)"
     @new-word-added="(incomingWord: string) => addNewWord(incomingWord)"
     @case-changed="(newValue: string) => setLetterCasing(newValue)"
@@ -220,8 +233,19 @@ export default defineComponent({
     @update-current-word-list="(incomingWordListIndex: number) => updateCurrentWordListIndex(incomingWordListIndex)"
     @update-word-list-name="(newData: newwordListHeaderData) => updatewordListHeader(newData)"
   />
-  <SuccessCelebration v-if="wordCompleted" :celebrationAudio="celebrationAudio" />
-  <h1 :class="{'current-word': true, 'current-word-completed': wordCompleted}" v-if="currentWord?.length > 0">
+  <SuccessCelebration
+    v-if="wordCompleted"
+    :celebrationAudio="celebrationAudio"
+  />
+  <WordResultControls :activationResetDelay="2000" />
+  <h1
+    :class="{
+      'current-word': true,
+      'current-word-completed': wordCompleted,
+      'current-word-with-main-menu-open': store.mainMenuOpen,
+    }"
+    v-if="currentWord?.length > 0"
+  >
     <span
       v-for="char in currentWord.length"
       :key="char"
@@ -239,12 +263,18 @@ export default defineComponent({
   position: relative;
   font-size: 15vw;
   z-index: 1;
+  transition: all 400ms cubic-bezier(.215, .61, .355, 1);
 }
-.highlighted-char, .current-word-completed {
+.highlighted-char,
+.current-word-completed {
   color: #1dad08;
 }
 
 .success-notice {
   position: absolute;
+}
+
+.current-word-with-main-menu-open {
+  translate: 100px;
 }
 </style>
