@@ -1,7 +1,6 @@
 <script lang="ts">
 import SuccessCelebration from "./components/SuccessCelebration.vue";
 import PrimaryNavigation from "./components/PrimaryNavigation.vue";
-import celebrationSound from "./assets/celebration-sound.mp3";
 import wordListReviewUnit from "./wordListReviewUnit";
 import { store } from "./store";
 import { defineComponent } from "vue";
@@ -14,7 +13,6 @@ export default defineComponent({
         // order: 'chronologial', // random
         // wordLength
       },
-      celebrationAudio: new Audio(celebrationSound),
       wordListReviewUnitIsActive: false,
       store,
     };
@@ -92,7 +90,6 @@ export default defineComponent({
         const parsedData = JSON.parse(loadedData);
 
         this.store.wordLists = parsedData.wordLists;
-        this.currentWordListWords = this.store.wordLists[0].words;
         this.store.gameSettings = parsedData.gameSettings;
         this.store.currentWordListIndex = parsedData.gameState.currentWordListIndex;
         this.store.currentWordIndex = parsedData.gameState.currentWordIndex;
@@ -118,9 +115,10 @@ export default defineComponent({
       };
       localStorage.setItem("leer-data", JSON.stringify(gameData));
     },
-    getdocumentHeight() {
+    setDocumentDimensions() {
       const doc = document.documentElement;
       doc.style.setProperty("--doc-height", `${window.innerHeight}px`);
+      doc.style.setProperty("--doc-width", `${window.innerWidth}px`);
     },
     createNewWordList() {
       const emptyWordList = {
@@ -143,11 +141,16 @@ export default defineComponent({
         this.currentWordListWords
       );
     },
+    currentReviewUnitWord() {
+      return this.store.currentWordListReviewUnit.words[this.store.currentWordIndex]
+    },
+    wordFailed() {
+      return !this.currentReviewUnitWord().successful && this.currentReviewUnitWord().reviewed
+    }
   },
   mounted: function () {
     this.loadGameData();
-    this.getdocumentHeight();
-    this.celebrationAudio.preload;
+    this.setDocumentDimensions();
     this.newWordListReviewUnit();
 
     if (this.currentWordListWords.length <= this.store.currentWordIndex) {
@@ -166,7 +169,7 @@ export default defineComponent({
       }
     });
 
-    window.addEventListener("resize", this.getdocumentHeight);
+    window.addEventListener("resize", this.setDocumentDimensions);
 
     setInterval(() => {
       this.saveGameData();
@@ -205,35 +208,32 @@ export default defineComponent({
   />
   <SuccessCelebration
     v-if="store.celebrationActive"
-    :celebrationAudio="celebrationAudio"
   />
   <WordResultControls />
   <h1
     :class="{
       'current-word': true,
       'current-word-completed': store.wordCompleted,
+      'current-word-failed': wordFailed(),
       'current-word-with-main-menu-open': store.mainMenuOpen,
     }"
     v-if="currentWord?.length > 0"
   >
-    <span
-      v-for="char in currentWord.length"
-      :key="char"
-      :class="{
-        'word-character': true,
-      }"
-      >{{ currentWordFormatted[char - 1] }}</span
-    >
+    {{currentWordFormatted}}
   </h1>
 </template>
 
 <style scoped>
 .current-word {
   position: relative;
+  max-width: calc(100% - 250px);
   font-size: 15vw;
+  text-align: center;
+  margin: 0 auto;
   z-index: 1;
   transition: all 400ms cubic-bezier(.215, .61, .355, 1);
 }
+
 .highlighted-char,
 .current-word-completed {
   color: #1dad08;
@@ -245,5 +245,9 @@ export default defineComponent({
 
 .current-word-with-main-menu-open {
   translate: 100px;
+}
+
+.current-word-failed {
+  color: rgba(0 0 0 / 65%);
 }
 </style>

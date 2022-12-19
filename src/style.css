@@ -21,6 +21,15 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+#app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--doc-width);
+  height: 100vh; /* fallback for Js load */
+  height: var(--doc-height);
+}
+
 button {
   cursor: pointer;
 }

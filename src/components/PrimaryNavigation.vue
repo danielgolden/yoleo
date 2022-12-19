@@ -65,7 +65,7 @@ export default defineComponent({
       ref="omniInput"
     />
     <hr>
-    <navigation class="word-lists">
+    <nav class="word-lists">
       <NavigationWordList
         v-for="(wordList, index) in store.wordLists"
         :key="wordList"
@@ -76,7 +76,7 @@ export default defineComponent({
         @delete-word="(wordIndex: number) => $emit('delete-word', wordIndex)"
         v-bind="$attrs"
       />
-    </navigation>
+    </nav>
     <footer class="navigation-footer">
       <button class="new-group-button" @click="handleNewWordListClick">
         <svg class="new-group-button-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">

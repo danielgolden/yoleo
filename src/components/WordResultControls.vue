@@ -17,6 +17,9 @@ export default defineComponent({
     lastWordInListIsActive() {
       return this.store.currentWordIndex === this.currentWordListWords.length - 1;
     },
+    currentReviewUnitWord() {
+      return this.store.currentWordListReviewUnit.words[this.store.currentWordIndex]
+    }
   },
   methods: {
     advanceWord() {
@@ -31,18 +34,17 @@ export default defineComponent({
     },
     handleButtonClick(success: boolean): void {
       this.activated = success ? 'success' : 'failure';
-      const currentReviewUnitWord = this.store.currentWordListReviewUnit.words[this.store.currentWordIndex]
-      currentReviewUnitWord.reviewed = true;
+      this.currentReviewUnitWord.reviewed = true;
 
       if (success) {
-        currentReviewUnitWord.successful = true
+        this.currentReviewUnitWord.successful = true
         store.wordCompleted = true;
         
         setTimeout(() => {
           store.wordCompleted = false;
         }, this.store.activationResetDelay);
       } else {
-        currentReviewUnitWord.successful = false;
+        this.currentReviewUnitWord.successful = false;
       }
 
       setTimeout(() => {
@@ -113,16 +115,14 @@ export default defineComponent({
   transition: all var(--transition-timing) cubic-bezier(.215, .61, .355, 1);
 }
 
-.word-outcome-button:hover {
-  background-color: #f1f1f1;
-}
-
-.success-outcome-button:hover {
-   background-color: #ECFFEB;
-}
-
-.failure-outcome-button:hover {
-   background-color: #FFF4F4;
+@media (hover: hover) {
+  .success-outcome-button:hover {
+     background-color: #ECFFEB;
+  }
+  
+  .failure-outcome-button:hover {
+     background-color: #FFF4F4;
+  }
 }
 
 .word-outcome-button:hover .icon-static {

@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import ConfettiExplosion from "vue-confetti-explosion";
+import celebrationSound from "../assets/celebration-sound.mp3";
 
 export default defineComponent({
   data() {
@@ -9,14 +10,17 @@ export default defineComponent({
         width: 1000,
         height: 1000
       },
-      confettiActive: false
+      confettiActive: false,
+      celebrationAudio: new Audio(celebrationSound),
     };
   },
-  props: {
-    celebrationAudio: { type: HTMLAudioElement, required: true }
+  methods: {
+    playCelebrationAudio() {
+      this.celebrationAudio.play();
+    }
   },
   mounted: function () {
-    this.celebrationAudio.play();
+    this.celebrationAudio.preload;
     this.windowSize.width = window.innerWidth - 100;
     this.windowSize.height = window.innerHeight;
 
@@ -24,18 +28,29 @@ export default defineComponent({
       this.confettiActive = true;
     }, 100)
   },
+  watch: {
+    confettiActive(newValue, oldValue) {
+      if (newValue) this.playCelebrationAudio();
+    }
+  }
 });
 </script>
 
 <template>
-  <ConfettiExplosion v-if="confettiActive" :stageWidth="windowSize.width" :stageHeight="windowSize.height" />
+  <div class="confetti-explosion-container">
+    <ConfettiExplosion v-if="confettiActive" :stageWidth="windowSize.width" :stageHeight="windowSize.height" />
+  </div>
 </template>
 
-<style scoped>
-.confetti-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+<style>
+  .confetti-explosion-container {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  .confetti-container {
+    translate: 0 -100px;
+  }
 </style>
