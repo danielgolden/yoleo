@@ -231,7 +231,7 @@ export default defineComponent({
   text-align: center;
   margin: 0 auto;
   z-index: 1;
-  transition: all 400ms cubic-bezier(.215, .61, .355, 1);
+  transition: all 300ms cubic-bezier(.215, .61, .355, 1);
 }
 
 .highlighted-char,
