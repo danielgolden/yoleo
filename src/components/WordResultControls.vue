@@ -10,10 +10,25 @@ export default defineComponent({
       store
     };
   },
-  props: {
-    activationResetDelay: { type: Number, required: true},
+  computed: {
+    currentWordListWords(): string[] {
+      return this.store.wordLists[this.store.currentWordListIndex].words;
+    },
+    lastWordInListIsActive() {
+      return this.store.currentWordIndex === this.currentWordListWords.length - 1;
+    },
   },
   methods: {
+    advanceWord() {
+      // Move the word forward one character
+      if (this.lastWordInListIsActive) {
+        this.store.currentWordIndex = 0;
+      } else {
+        this.store.currentWordIndex++;
+      }
+
+      this.store.wordCompleted = false;
+    },
     handleButtonClick(success: boolean): void {
       this.activated = success ? 'success' : 'failure';
       const currentReviewUnitWord = this.store.currentWordListReviewUnit.words[this.store.currentWordIndex]
@@ -24,17 +39,16 @@ export default defineComponent({
         store.wordCompleted = true;
         
         setTimeout(() => {
-          this.store.currentWordIndex++
           store.wordCompleted = false;
-        }, this.activationResetDelay);
+        }, this.store.activationResetDelay);
       } else {
         currentReviewUnitWord.successful = false;
       }
 
       setTimeout(() => {
         this.activated = '';
-        this.store.currentWordIndex++
-      }, this.activationResetDelay);
+        this.advanceWord();
+      }, this.store.activationResetDelay);
     }
   }
 });

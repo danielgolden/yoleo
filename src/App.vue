@@ -9,7 +9,6 @@ import { defineComponent } from "vue";
 export default defineComponent({
   data() {
     return {
-      currentCharIndex: 0,
       gameSettings: {
         case: "sentence", // upper, lower, sentence
         // order: 'chronologial', // random
@@ -29,9 +28,6 @@ export default defineComponent({
         this.store.currentWordIndex
       ];
     },
-    currentChar() {
-      return this.currentWord[this.currentCharIndex];
-    },
     currentWordFormatted(): String {
       const formattingFunctions = {
         lower: () => this.currentWord.toLowerCase(),
@@ -50,14 +46,6 @@ export default defineComponent({
     },
   },
   methods: {
-    advanceCharacter() {
-      // Move the word forward one character
-      this.currentCharIndex++;
-
-      if (this.currentCharIndex === this.currentWord.length) {
-        this.store.wordCompleted = true;
-      }
-    },
     advanceWord() {
       // Move the word forward one character
       if (this.lastWordInListIsActive) {
@@ -66,7 +54,6 @@ export default defineComponent({
         this.store.currentWordIndex++;
       }
 
-      this.currentCharIndex = 0;
       this.store.wordCompleted = false;
     },
     regressWord() {
@@ -75,7 +62,6 @@ export default defineComponent({
         this.store.currentWordIndex--;
       }
 
-      this.currentCharIndex = 0;
       this.store.wordCompleted = false;
     },
     setLetterCasing(incomingSetting: string) {
@@ -84,12 +70,10 @@ export default defineComponent({
     addNewWord(incomingWord: string) {
       this.currentWordListWords.push(incomingWord);
       this.store.currentWordIndex = this.currentWordListWords.length - 1;
-      this.currentCharIndex = 0;
       this.saveGameData();
     },
     changeWordToSelection(incomingWordIndex: number) {
       this.store.currentWordIndex = incomingWordIndex;
-      this.currentCharIndex = 0;
     },
     removeWord(wordIndex?: number) {
       const indexOfWordToBeDeleted = wordIndex ?? this.store.currentWordIndex;
@@ -97,7 +81,6 @@ export default defineComponent({
       this.currentWordListWords.splice(indexOfWordToBeDeleted, 1);
       if (this.currentWordListWords.length === 0) {
         this.store.currentWordIndex = 0;
-        this.currentCharIndex = 0;
       }
       this.saveGameData();
     },
@@ -172,13 +155,6 @@ export default defineComponent({
     }
 
     window.addEventListener("keydown", (e) => {
-      // Listen for correct keystrokes
-      // const letterIsCorrect =
-      //   e.key.toLowerCase() ===
-      //   this.currentWordListWords[this.store.currentWordIndex][this.currentCharIndex]?.toLowerCase();
-      // if (this.store.wordCompleted) this.advanceWord();
-      // if (letterIsCorrect) this.advanceCharacter();
-
       if (e.code == "Enter" && e.metaKey) {
         this.store.wordCompleted = true;
       }
@@ -231,7 +207,7 @@ export default defineComponent({
     v-if="store.celebrationActive"
     :celebrationAudio="celebrationAudio"
   />
-  <WordResultControls :activationResetDelay="2000" />
+  <WordResultControls />
   <h1
     :class="{
       'current-word': true,
@@ -244,7 +220,6 @@ export default defineComponent({
       v-for="char in currentWord.length"
       :key="char"
       :class="{
-        'highlighted-char': char <= currentCharIndex,
         'word-character': true,
       }"
       >{{ currentWordFormatted[char - 1] }}</span

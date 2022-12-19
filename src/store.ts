@@ -19,5 +19,6 @@ export const store = reactive({
     // order: 'chronologial', // random
     // wordLength
   },
-  celebrationActive: false
+  celebrationActive: false,
+  activationResetDelay: 2000
 });

@@ -20,15 +20,6 @@ interface GameSettings {
   case: string
 }
 
-interface AllStateData {
-  wordLists: WordList[];
-  currentWordListIndex: number;
-  currentWordIndex: number;
-  currentCharIndex: number;
-  wordCompleted: boolean;
-  gameSettings: GameSettings;
-}
-
 interface WordListReviewUnitWord {
   id: string; // Change this to a UUID
   text: string;
