@@ -123,6 +123,14 @@ export default defineComponent({
   .failure-outcome-button:hover {
      background-color: #FFF4F4;
   }
+
+  .word-outcome-button:hover .success-icon-static path {
+    fill: #2A6744;
+  }
+  .word-outcome-button:hover .failure-icon-static path {
+    fill: #9A1C1C;
+  }
+
 }
 
 .word-outcome-button:hover .icon-static {
@@ -131,13 +139,6 @@ export default defineComponent({
 
 .word-outcome-button:active .icon-static {
   scale: 1;
-}
-
-.word-outcome-button:hover .success-icon-static path {
-  fill: #2A6744;
-}
-.word-outcome-button:hover .failure-icon-static path {
-  fill: #9A1C1C;
 }
 
 .failure-outcome-button-activated {
