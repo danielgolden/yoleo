@@ -13,9 +13,6 @@ export default defineComponent({
       store
     };
   },
-  props: {
-    allStateData: { type: Object as PropType<AllStateData>, required: true},
-  },
   mounted: function () {
     window.addEventListener("keydown", (e) => {
       const slashWasPressed = e.key === "/";
