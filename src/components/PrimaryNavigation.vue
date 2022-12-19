@@ -31,24 +31,21 @@ export default defineComponent({
     },
     handleNewWordListClick() {
       this.$emit('create-new-word-list');
-      // this.allStateData.wordLists[this.allStateData.wordLists.length - 1]
     }
   },
   watch: {
-    store: {
-      handler(newValue) {
-        const omniInput = (this.$refs.omniInput as HTMLElement);
-        if (newValue.mainMenuOpen) {
+    'store.mainMenuOpen'(newValue) {
+      const omniInput = (this.$refs.omniInput as HTMLElement);
+        if (newValue) {
           setTimeout(() => {
             omniInput.focus();
           }, 100)
         }
 
-        if (!newValue.mainMenuOpen) {
+        if (!newValue) {
           this.omniInputValue = '';
           omniInput.blur();
         }
-      }
     }
   }
   
@@ -73,13 +70,11 @@ export default defineComponent({
     <hr>
     <navigation class="word-lists">
       <NavigationWordList
-        v-for="(wordList, index) in allStateData.wordLists"
+        v-for="(wordList, index) in store.wordLists"
         :key="wordList"
         :wordList="wordList"
         :wordListIndex="index"
-        :currentWordListIndex="allStateData.currentWordListIndex"
-        :currentWordIndex="allStateData.currentWordIndex"
-        :isCurrentWordList="index === allStateData.currentWordListIndex"
+        :isCurrentWordList="index === store.currentWordListIndex"
         @new-word-selected="(incomingWordIndex: number) => $emit('newWordSelected', incomingWordIndex)"
         @delete-word="(wordIndex: number) => $emit('delete-word', wordIndex)"
         v-bind="$attrs"
@@ -94,7 +89,7 @@ export default defineComponent({
       </button>
       <Settings
         @case-changed="(newValue: string) => $emit('case-changed', newValue)"
-        :currentSettings="allStateData.gameSettings"
+        :currentSettings="store.gameSettings"
       />
     </footer>
   </section>

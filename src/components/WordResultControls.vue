@@ -16,15 +16,24 @@ export default defineComponent({
   methods: {
     handleButtonClick(success: boolean): void {
       this.activated = success ? 'success' : 'failure';
+      const currentReviewUnitWord = this.store.currentWordListReviewUnit.words[this.store.currentWordIndex]
+      currentReviewUnitWord.reviewed = true;
 
       if (success) {
-        this.$emit('wordOutcomeSuccess');
+        currentReviewUnitWord.successful = true
+        store.wordCompleted = true;
+        
+        setTimeout(() => {
+          this.store.currentWordIndex++
+          store.wordCompleted = false;
+        }, this.activationResetDelay);
       } else {
-        this.$emit('wordOutcomeFailure');
+        currentReviewUnitWord.successful = false;
       }
 
       setTimeout(() => {
         this.activated = '';
+        this.store.currentWordIndex++
       }, this.activationResetDelay);
     }
   }

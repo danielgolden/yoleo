@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import WordListItem from './WordListItem.vue';
+import { store } from "../store";
 
 export default defineComponent({
   emits: ["updateCurrentWordList", "newWordSelected", "updatewordListHeader", "deleteWord"],
@@ -9,13 +10,12 @@ export default defineComponent({
       hidden: false,
       active: false,
       editMode: false,
+      store
     };
   },
   props: {
     wordList: {type: Object as PropType<WordList>, required: true},
     wordListIndex: Number,
-    currentWordListIndex: Number,
-    currentWordIndex: Number,
     isCurrentWordList: Boolean,
   },
   methods: {
@@ -23,7 +23,7 @@ export default defineComponent({
       this.editMode = !this.editMode;
     },
     handlewordListHeaderContainerClick() {
-      console.log('currentWordListIndex:', this.currentWordListIndex); 
+      console.log('currentWordListIndex:', this.store.currentWordListIndex); 
       if (!this.editMode) {
         this.hidden = this.isCurrentWordList && !this.hidden;
         this.$emit('updateCurrentWordList', this.wordListIndex);
@@ -72,7 +72,7 @@ export default defineComponent({
     <ul v-if="open" class="word-list">
       <WordListItem 
         v-for="(word, index) in wordList.words"
-        :isActiveWordListItem="index === currentWordIndex"
+        :isActiveWordListItem="index === store.currentWordIndex"
         :wordListItemIndex="index"
         :wordText="word"
         :wordListIsInEditMode="editMode"

@@ -5,22 +5,11 @@ import celebrationSound from "./assets/celebration-sound.mp3";
 import wordListReviewUnit from "./wordListReviewUnit";
 import { store } from "./store";
 import { defineComponent } from "vue";
-import { v4 as uuidv4 } from "uuid";
 
 export default defineComponent({
   data() {
     return {
-      wordLists: [
-        {
-          name: "Default",
-          words: ["Pa", "No", "Si", "Oso"],
-          mostRecentWordIndex: 0,
-        },
-      ],
-      currentWordListIndex: 0,
-      currentWordIndex: 0,
       currentCharIndex: 0,
-      wordCompleted: false,
       gameSettings: {
         case: "sentence", // upper, lower, sentence
         // order: 'chronologial', // random
@@ -28,17 +17,16 @@ export default defineComponent({
       },
       celebrationAudio: new Audio(celebrationSound),
       wordListReviewUnitIsActive: false,
-      currentWordListReviewUnit: new wordListReviewUnit(["default"]),
       store,
     };
   },
   computed: {
     currentWordListWords(): string[] {
-      return this.wordLists[this.currentWordListIndex].words;
+      return this.store.wordLists[this.store.currentWordListIndex].words;
     },
     currentWord() {
-      return this.wordLists[this.currentWordListIndex].words[
-        this.currentWordIndex
+      return this.store.wordLists[this.store.currentWordListIndex].words[
+        this.store.currentWordIndex
       ];
     },
     currentChar() {
@@ -54,11 +42,11 @@ export default defineComponent({
       };
 
       return formattingFunctions[
-        this.gameSettings.case as keyof FormattingFunctions
+        this.store.gameSettings.case as keyof FormattingFunctions
       ]();
     },
     lastWordInListIsActive() {
-      return this.currentWordIndex === this.currentWordListWords.length - 1;
+      return this.store.currentWordIndex === this.currentWordListWords.length - 1;
     },
   },
   methods: {
@@ -67,48 +55,48 @@ export default defineComponent({
       this.currentCharIndex++;
 
       if (this.currentCharIndex === this.currentWord.length) {
-        this.wordCompleted = true;
+        this.store.wordCompleted = true;
       }
     },
     advanceWord() {
       // Move the word forward one character
       if (this.lastWordInListIsActive) {
-        this.currentWordIndex = 0;
+        this.store.currentWordIndex = 0;
       } else {
-        this.currentWordIndex++;
+        this.store.currentWordIndex++;
       }
 
       this.currentCharIndex = 0;
-      this.wordCompleted = false;
+      this.store.wordCompleted = false;
     },
     regressWord() {
       // Move the word forward one character
-      if (this.currentWordIndex !== 0) {
-        this.currentWordIndex--;
+      if (this.store.currentWordIndex !== 0) {
+        this.store.currentWordIndex--;
       }
 
       this.currentCharIndex = 0;
-      this.wordCompleted = false;
+      this.store.wordCompleted = false;
     },
     setLetterCasing(incomingSetting: string) {
-      this.gameSettings.case = incomingSetting;
+      this.store.gameSettings.case = incomingSetting;
     },
     addNewWord(incomingWord: string) {
       this.currentWordListWords.push(incomingWord);
-      this.currentWordIndex = this.currentWordListWords.length - 1;
+      this.store.currentWordIndex = this.currentWordListWords.length - 1;
       this.currentCharIndex = 0;
       this.saveGameData();
     },
     changeWordToSelection(incomingWordIndex: number) {
-      this.currentWordIndex = incomingWordIndex;
+      this.store.currentWordIndex = incomingWordIndex;
       this.currentCharIndex = 0;
     },
     removeWord(wordIndex?: number) {
-      const indexOfWordToBeDeleted = wordIndex ?? this.currentWordIndex;
+      const indexOfWordToBeDeleted = wordIndex ?? this.store.currentWordIndex;
 
       this.currentWordListWords.splice(indexOfWordToBeDeleted, 1);
       if (this.currentWordListWords.length === 0) {
-        this.currentWordIndex = 0;
+        this.store.currentWordIndex = 0;
         this.currentCharIndex = 0;
       }
       this.saveGameData();
@@ -120,13 +108,13 @@ export default defineComponent({
       if (dataWasFound) {
         const parsedData = JSON.parse(loadedData);
 
-        this.wordLists = parsedData.wordLists;
-        this.currentWordListWords = this.wordLists[0].words;
-        this.gameSettings = parsedData.gameSettings;
-        this.currentWordListIndex = parsedData.gameState.currentWordListIndex;
-        this.currentWordIndex = parsedData.gameState.currentWordIndex;
+        this.store.wordLists = parsedData.wordLists;
+        this.currentWordListWords = this.store.wordLists[0].words;
+        this.store.gameSettings = parsedData.gameSettings;
+        this.store.currentWordListIndex = parsedData.gameState.currentWordListIndex;
+        this.store.currentWordIndex = parsedData.gameState.currentWordIndex;
       } else {
-        this.wordLists = [
+        this.store.wordLists = [
           {
             name: "Default",
             words: ["Pa", "No", "Si", "Oso"],
@@ -138,11 +126,11 @@ export default defineComponent({
     },
     saveGameData() {
       const gameData = {
-        wordLists: this.wordLists,
-        gameSettings: this.gameSettings,
+        wordLists: this.store.wordLists,
+        gameSettings: this.store.gameSettings,
         gameState: {
-          currentWordListIndex: this.currentWordListIndex,
-          currentWordIndex: this.currentWordIndex,
+          currentWordListIndex: this.store.currentWordListIndex,
+          currentWordIndex: this.store.currentWordIndex,
         },
       };
       localStorage.setItem("leer-data", JSON.stringify(gameData));
@@ -158,17 +146,17 @@ export default defineComponent({
         mostRecentWordIndex: 0,
       };
 
-      this.wordLists.push(emptyWordList);
+      this.store.wordLists.push(emptyWordList);
     },
     updateCurrentWordListIndex(incomingWordListIndex: number) {
-      this.currentWordListIndex = incomingWordListIndex;
+      this.store.currentWordListIndex = incomingWordListIndex;
     },
     updatewordListHeader(newData: newwordListHeaderData) {
       const { newName, wordListIndex } = newData;
-      this.wordLists[wordListIndex].name = newName;
+      this.store.wordLists[wordListIndex].name = newName;
     },
     newWordListReviewUnit() {
-      this.currentWordListReviewUnit = new wordListReviewUnit(
+      this.store.currentWordListReviewUnit = new wordListReviewUnit(
         this.currentWordListWords
       );
     },
@@ -179,20 +167,20 @@ export default defineComponent({
     this.celebrationAudio.preload;
     this.newWordListReviewUnit();
 
-    if (this.currentWordListWords.length <= this.currentWordIndex) {
-      this.currentWordIndex = 0;
+    if (this.currentWordListWords.length <= this.store.currentWordIndex) {
+      this.store.currentWordIndex = 0;
     }
 
     window.addEventListener("keydown", (e) => {
       // Listen for correct keystrokes
       // const letterIsCorrect =
       //   e.key.toLowerCase() ===
-      //   this.currentWordListWords[this.currentWordIndex][this.currentCharIndex]?.toLowerCase();
-      // if (this.wordCompleted) this.advanceWord();
+      //   this.currentWordListWords[this.store.currentWordIndex][this.currentCharIndex]?.toLowerCase();
+      // if (this.store.wordCompleted) this.advanceWord();
       // if (letterIsCorrect) this.advanceCharacter();
 
       if (e.code == "Enter" && e.metaKey) {
-        this.wordCompleted = true;
+        this.store.wordCompleted = true;
       }
 
       if (e.code === "ArrowRight" || e.code === "ArrowDown") {
@@ -209,15 +197,21 @@ export default defineComponent({
     }, 5000);
   },
   watch: {
-    wordLists: {
-      handler() {
-        this.saveGameData();
-      },
-      deep: true,
+    'store.currentWordListIndex'() {
+      this.saveGameData();
     },
-    currentWordIndex() {
-      this.wordCompleted = false;
+    'store.currentWordIndex'() {
+      this.store.wordCompleted = false;
     },
+    'store.wordCompleted'(newValue) {
+      if (newValue) {
+        this.store.celebrationActive = true;        
+      } else {
+        setTimeout(() => {
+          this.store.celebrationActive = false;        
+        }, 1000)
+      }
+    }
   },
 });
 </script>
@@ -234,14 +228,14 @@ export default defineComponent({
     @update-word-list-name="(newData: newwordListHeaderData) => updatewordListHeader(newData)"
   />
   <SuccessCelebration
-    v-if="wordCompleted"
+    v-if="store.celebrationActive"
     :celebrationAudio="celebrationAudio"
   />
   <WordResultControls :activationResetDelay="2000" />
   <h1
     :class="{
       'current-word': true,
-      'current-word-completed': wordCompleted,
+      'current-word-completed': store.wordCompleted,
       'current-word-with-main-menu-open': store.mainMenuOpen,
     }"
     v-if="currentWord?.length > 0"
