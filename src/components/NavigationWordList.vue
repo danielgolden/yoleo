@@ -64,6 +64,7 @@ export default defineComponent({
       :wordListContents="wordList"
       :open="open"
       :wordListIsInEditMode="editMode"
+      :wordListIndex="wordListIndex"
       @word-list-header-click="handlewordListHeaderContainerClick"
       @word-list-header-input="(incomingValue: string) => handlewordListHeaderChange(incomingValue)"
       @edit-button-click="handleEditModeButton"

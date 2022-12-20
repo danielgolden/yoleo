@@ -2,6 +2,7 @@
 import SuccessCelebration from "./components/SuccessCelebration.vue";
 import PrimaryNavigation from "./components/PrimaryNavigation.vue";
 import wordListReviewUnit from "./wordListReviewUnit";
+
 import { store } from "./store";
 import { defineComponent } from "vue";
 
@@ -192,6 +193,11 @@ export default defineComponent({
         setTimeout(() => {
           this.store.celebrationActive = false;        
         }, 1000)
+      }
+    },
+    'store.wordLists'(newValue, oldValue) {
+      if (newValue < oldValue) {
+        this.saveGameData();
       }
     }
   },

@@ -1,15 +1,54 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import Popover from './Popover.vue';
+import VueClickAway from "vue3-click-away";
+import { store } from "../store";
 
 export default defineComponent({
+  data() {
+    return {
+      contextMenuActive: false,
+      popoverItems: [
+        { label: 'Edit', icon: 'edit', onClick: () => this.$emit('editButtonClick'), destructive: false },
+        ... store.wordLists.length > 1 ? [{ label: 'Delete', icon: 'delete', onClick: this.deleteGroup, destructive: true }] : [],
+      ],
+      store
+    }
+  },
   emits: ["wordListHeaderClick", "wordListHeaderInput", "editButtonClick"],
   props: {
     isCurrentWordList: {type: Boolean, required: true},
     wordListContents: { type: Object as PropType<WordList>, required: true },
     wordListIsInEditMode: {type: Boolean, required: true},
     open: { type: Boolean, required: true },
+    wordListIndex: {type: Number, required: true}
   },
+  methods: {
+    handlePopoverTrigger() {
+      this.contextMenuActive = true;
+    },
+    closePopover() {
+      this.contextMenuActive = false
+    },
+    deleteGroup() {
+      const confirmDelete = confirm(`Delete the "${this.store.wordLists[this.wordListIndex].name}" word group?`);
+
+      if (confirmDelete) {
+        this.store.wordLists.splice(this.wordListIndex, 1);
+        this.store.currentWordListReviewUnit.words.splice(this.wordListIndex, 1);
+        this.store.currentWordListIndex = 0
+        this.store.currentWordIndex = 0;
+      }
+    }
+  },
+  watch: {
+    'store.wordLists'(newValue) {
+      if (newValue.length === 1) {
+        this.popoverItems.splice(1, 1);
+      }
+    }
+  }
 });
 </script>
 
@@ -21,7 +60,15 @@ export default defineComponent({
           isCurrentWordList,
       }"
       @click="$emit('wordListHeaderClick')"
+      @contextmenu.prevent="handlePopoverTrigger" 
     >
+      <Popover 
+        v-if="contextMenuActive" 
+        classes="word-list-header-popover" 
+        :items="popoverItems" 
+        v-click-away="closePopover"
+        @close-popover="closePopover"
+      />
       <h3
         :class="{
           'active-word-list-name':
@@ -56,6 +103,7 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   padding: 6px 12px;
   border-radius: 6px;
 }
@@ -105,5 +153,11 @@ export default defineComponent({
   position: relative;
   top: 1px;
   cursor: text;
+}
+
+.word-list-header-popover {
+  position: absolute;
+  top: 40px;
+  right: 0;
 }
 </style>

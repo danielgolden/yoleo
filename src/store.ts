@@ -20,5 +20,5 @@ export const store = reactive({
     // wordLength
   },
   celebrationActive: false,
-  activationResetDelay: 2000
+  activationResetDelay: 2000,
 });
