@@ -8,11 +8,6 @@ import { defineComponent } from "vue";
 export default defineComponent({
   data() {
     return {
-      gameSettings: {
-        case: "sentence", // upper, lower, sentence
-        // order: 'chronologial', // random
-        // wordLength
-      },
       wordListReviewUnitIsActive: false,
       store,
     };
@@ -42,6 +37,16 @@ export default defineComponent({
     lastWordInListIsActive() {
       return this.store.currentWordIndex === this.currentWordListWords.length - 1;
     },
+    currentReviewUnitWord() {
+      return this.store.currentWordListReviewUnit.words[this.store.currentWordIndex]
+    },
+    wordFailed() {
+      const currentWordIndex = this.store.currentWordIndex;
+      const currentReviewUnitWords = this.store.currentWordListReviewUnit.words;
+      const currentReviewUnitWord = currentReviewUnitWords[currentWordIndex];
+
+      return !currentReviewUnitWord.successful && this.currentReviewUnitWord.reviewed
+    }
   },
   methods: {
     advanceWord() {
@@ -69,6 +74,8 @@ export default defineComponent({
       this.currentWordListWords.push(incomingWord);
       this.store.currentWordIndex = this.currentWordListWords.length - 1;
       this.saveGameData();
+
+      this.store.currentWordListReviewUnit.addNewWord(incomingWord);
     },
     changeWordToSelection(incomingWordIndex: number) {
       this.store.currentWordIndex = incomingWordIndex;
@@ -131,6 +138,8 @@ export default defineComponent({
     },
     updateCurrentWordListIndex(incomingWordListIndex: number) {
       this.store.currentWordListIndex = incomingWordListIndex;
+      this.store.currentWordIndex = 0;
+      this.newWordListReviewUnit();
     },
     updatewordListHeader(newData: newwordListHeaderData) {
       const { newName, wordListIndex } = newData;
@@ -140,12 +149,6 @@ export default defineComponent({
       this.store.currentWordListReviewUnit = new wordListReviewUnit(
         this.currentWordListWords
       );
-    },
-    currentReviewUnitWord() {
-      return this.store.currentWordListReviewUnit.words[this.store.currentWordIndex]
-    },
-    wordFailed() {
-      return !this.currentReviewUnitWord().successful && this.currentReviewUnitWord().reviewed
     }
   },
   mounted: function () {
@@ -214,7 +217,7 @@ export default defineComponent({
     :class="{
       'current-word': true,
       'current-word-completed': store.wordCompleted,
-      'current-word-failed': wordFailed(),
+      'current-word-failed': wordFailed,
       'current-word-with-main-menu-open': store.mainMenuOpen,
     }"
     v-if="currentWord?.length > 0"

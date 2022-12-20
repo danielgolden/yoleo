@@ -23,7 +23,6 @@ export default defineComponent({
       this.editMode = !this.editMode;
     },
     handlewordListHeaderContainerClick() {
-      console.log('currentWordListIndex:', this.store.currentWordListIndex); 
       if (!this.editMode) {
         this.hidden = this.isCurrentWordList && !this.hidden;
         this.$emit('updateCurrentWordList', this.wordListIndex);

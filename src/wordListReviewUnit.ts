@@ -28,6 +28,15 @@ export default class wordListReviewUnit {
     return wordsThatMeetTheCriteria.length;
   };
 
+  addNewWord = (text: string): void => {
+    this.words.push({
+      id: uuidv4(),
+      text: text,
+      reviewed: false,
+      successful: false,
+    });
+  };
+
   intializeReviewUnitWords = (wordList: string[]): WordListReviewUnitWord[] => {
     const reviewUnitWordList = wordList.map((word) => {
       return {

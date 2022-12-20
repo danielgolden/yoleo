@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest --dom",
+    "test": "vitest --environment happy-dom",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "vue-confetti-explosion": "^1.0.2"
   },
   "devDependencies": {
+    "@testing-library/vue": "^6.6.1",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.2.6",
     "typescript": "^4.9.3",
