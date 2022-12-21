@@ -2,7 +2,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import Menu from './Menu.vue';
-import VueClickAway from "vue3-click-away";
+import Icon from "./Icon.vue";
 import { store } from "../store";
 
 export default defineComponent({
@@ -58,7 +58,8 @@ export default defineComponent({
       :class="{
         'word-list-name-container': true,
         'active-word-list-name-container':
-          isCurrentWordList,
+    isCurrentWordList,
+          'is-in-edit-mode': wordListIsInEditMode
       }"
       @click="$emit('wordListHeaderClick')"
       @contextmenu.prevent="handleMenuTrigger" 
@@ -94,13 +95,12 @@ export default defineComponent({
         </span>
       </h3>
       <button
-        v-if="isCurrentWordList"
+        v-if="isCurrentWordList || wordListIsInEditMode"
         @click.stop="$emit('editButtonClick')"
         class="edit-button"
       >
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0126 1.42678C10.696 0.743359 11.804 0.743361 12.4874 1.42678L13.5732 2.51257C14.2566 3.19598 14.2566 4.30402 13.5732 4.98744L4.96355 13.5971C4.75325 13.8074 4.49283 13.9606 4.20687 14.0423L0.956032 14.9711C0.694132 15.046 0.412262 14.9729 0.219662 14.7803C0.027062 14.5877 -0.0459811 14.3059 0.0288419 14.044L0.957662 10.7931C1.03936 10.5072 1.19259 10.2467 1.40289 10.0364L10.0126 1.42678ZM11.4268 2.48744C11.3291 2.38981 11.1708 2.38981 11.0732 2.48744L9.8106 3.75L11.25 5.18934L12.5126 3.92678C12.6102 3.82915 12.6102 3.67086 12.5126 3.57323L11.4268 2.48744ZM10.1893 6.25L8.74999 4.81066L2.46355 11.0971C2.43351 11.1271 2.41162 11.1643 2.39994 11.2052L1.842 13.158L3.79479 12.6C3.83564 12.5884 3.87284 12.5665 3.90289 12.5364L10.1893 6.25Z" :fill="wordListIsInEditMode ? '#ffffff' : '#9FC7F8'"/>
-        </svg>
+        <Icon v-if="!wordListIsInEditMode" name="edit" color="#9FC7F8" />
+        <Icon v-if="wordListIsInEditMode" name="check" :color="isCurrentWordList ? '#ffffff' : '#000'" />
       </button>
     </div>
 </template>
@@ -115,7 +115,9 @@ export default defineComponent({
   border-radius: 6px;
 }
 
-.word-list-name-container:not(.active-word-list-name-container):hover {
+.word-list-name-container:not(.active-word-list-name-container):hover,
+.is-in-edit-mode:not(.active-word-list-name-container)
+ {
   background-color: #e7e7e7;
 }
 
@@ -152,6 +154,14 @@ export default defineComponent({
   place-items: center;
   border: none;
   background-color: transparent;
+}
+
+.is-in-edit-mode .edit-button {
+  opacity: .8;
+}
+
+.is-in-edit-mode .edit-button:hover {
+  opacity: 1;
 }
 
 .word-list-header-menu {
