@@ -13,12 +13,6 @@ export default defineComponent({
       store
     };
   },
-  mounted: function () {
-    window.addEventListener("keydown", (e) => {
-      const slashWasPressed = e.key === "/";
-      if (slashWasPressed) this.store.mainMenuOpen = !this.store.mainMenuOpen;
-    });
-  },
   methods: {
     submitNewWord() {
       if (this.omniInputValue !== '') {

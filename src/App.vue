@@ -168,15 +168,14 @@ export default defineComponent({
     }
 
     window.addEventListener("keydown", (e) => {
-      if (e.code == "Enter" && e.metaKey) {
-        this.store.wordCompleted = true;
-      }
-
       if (e.code === "ArrowRight" || e.code === "ArrowDown") {
         this.advanceWord();
       } else if (e.code === "ArrowLeft" || e.code === "ArrowUp") {
         this.regressWord();
       }
+
+      const slashWasPressed = e.key === "/";
+      if (slashWasPressed) this.store.mainMenuOpen = !this.store.mainMenuOpen;
     });
 
     window.addEventListener("resize", this.setDocumentDimensions);
