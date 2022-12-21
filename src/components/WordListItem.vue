@@ -59,7 +59,7 @@ export default defineComponent({
 }
 
 .word-list-item:hover {
-    background-color: var(--color-bg-interactive-hover);
+  background-color: var(--color-bg-interactive-hover);
 }
 
 .word-list-item:not(.active-word-list-item):hover .word-state-indicator {
@@ -84,7 +84,7 @@ export default defineComponent({
 .active-word-list-item {
   color: var(--color-text-interactive);
   font-weight: 700;
-  background-color: var(--color-bg-interactive-hover);
+  /* background-color: var(--color-bg-interactive-hover); */
 }
 
 .delete-word-button {
