@@ -174,10 +174,6 @@ export default defineComponent({
     });
 
     window.addEventListener("resize", this.setDocumentDimensions);
-
-    setInterval(() => {
-      this.saveGameData();
-    }, 5000);
   },
   watch: {
     'store.currentWordListIndex'() {
@@ -196,9 +192,10 @@ export default defineComponent({
       }
     },
     'store.wordLists'(newValue, oldValue) {
-      if (newValue < oldValue) {
-        this.saveGameData();
-      }
+      this.saveGameData();
+    },
+    'store.currentWordListReviewUnit'() {
+      this.saveGameData();
     }
   },
 });
