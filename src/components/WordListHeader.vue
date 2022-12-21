@@ -43,11 +43,9 @@ export default defineComponent({
       }
     }
   },
-  watch: {
-    'store.wordLists'(newValue) {
-      if (newValue.length === 1) {
-        this.menuItems.splice(1, 1);
-      }
+  updated: function () {
+    if (this.store.newWordListRecentlyAdded && this.wordListIsInEditMode) {
+      (this.$refs.headerNameInput as HTMLInputElement).focus();
     }
   }
 });
@@ -84,11 +82,12 @@ export default defineComponent({
         </svg>
         <input 
           type="text" 
-          v-if="wordListIsInEditMode" 
+          v-show="wordListIsInEditMode" 
           v-model="wordListName"
           class="header-name-edit-input"
           @input="$emit('wordListHeaderInput', wordListName)"
           @keydown.enter="$emit('editButtonClick')"
+          ref="headerNameInput"
         />
         <span :class="{'word-list-name-text': true, 'word-list-name-text-editable': wordListIsInEditMode}">
           {{ wordListContents && wordListContents.name }}

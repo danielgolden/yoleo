@@ -136,6 +136,12 @@ export default defineComponent({
       };
 
       this.store.wordLists.push(emptyWordList);
+      this.store.newWordListRecentlyAdded = true;
+
+      // So that we can focus the input of the header when it's added
+      setTimeout(() => {
+        this.store.newWordListRecentlyAdded = false;
+      }, 2000);
     },
     updateCurrentWordListIndex(incomingWordListIndex: number) {
       this.store.currentWordListIndex = incomingWordListIndex;
@@ -191,11 +197,17 @@ export default defineComponent({
         }, 1000)
       }
     },
-    'store.wordLists'(newValue, oldValue) {
-      this.saveGameData();
+    'store.wordLists': {
+      handler() {
+        this.saveGameData();
+      },
+      deep: true
     },
-    'store.currentWordListReviewUnit'() {
-      this.saveGameData();
+    'store.currentWordListReviewUnit': {
+      handler() {
+        this.saveGameData();
+      },
+      deep: true
     }
   },
 });

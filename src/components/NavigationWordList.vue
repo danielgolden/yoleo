@@ -46,6 +46,10 @@ export default defineComponent({
     },
     isCurrentWordList(newValue) {
       if (!newValue) this.editMode = false;
+    },
+  }, mounted: function () {
+    if (this.store.newWordListRecentlyAdded) {
+      this.editMode = true;
     }
   }
 });
