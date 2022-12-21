@@ -253,7 +253,7 @@ export default defineComponent({
 
 .highlighted-char,
 .current-word-completed {
-  color: #1dad08;
+  color: var(--color-text-attention-success);
 }
 
 .success-notice {
@@ -265,6 +265,6 @@ export default defineComponent({
 }
 
 .current-word-failed {
-  color: rgba(0 0 0 / 65%);
+  opacity: .65;
 }
 </style>

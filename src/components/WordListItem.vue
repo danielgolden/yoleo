@@ -50,20 +50,20 @@ export default defineComponent({
   padding: 0 8px;
   border-radius: 4px;
   cursor: pointer;
-  color: #646464;
+  color: var(--color-text-secondary);
   font-size: 14px;
 }
 
 .word-list-item:not(.active-word-list-item):hover {
-  color: #5d5d5d;
+  color: var(--color-text-primary);
 }
 
 .word-list-item:hover {
-    background-color: #e7e7e7;
+    background-color: var(--color-bg-interactive-hover);
 }
 
 .word-list-item:not(.active-word-list-item):hover .word-state-indicator {
-  background-color: rgba(0 0 0 / 12%);
+  background-color: var(--color-bg-indicator-inactive-hover);
 }
 .word-list-item-and-indicator-container {
   display: flex;
@@ -74,17 +74,17 @@ export default defineComponent({
 .word-state-indicator {
   width: 5px;
   height: 5px;
-  background-color: rgba(0 0 0 / 10%);
+  background-color: var(--color-bg-indicator-inactive);
   border-radius: 50%;
 }
 
 .active-word-list-item .word-state-indicator {
-  background-color: #216DDF;
+  background-color: var(--color-bg-indicator-active);
 }
 .active-word-list-item {
-  color: #216DDF;
+  color: var(--color-text-interactive);
   font-weight: 700;
-  background-color: #e7e7e7;
+  background-color: var(--color-bg-interactive-hover);
 }
 
 .delete-word-button {

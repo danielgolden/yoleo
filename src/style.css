@@ -5,6 +5,8 @@
 
 @media (prefers-color-scheme: light) {
   :root {
+    --color-accent: #216DDF;
+
     --color-bg-surface-1: #fff;
     --color-bg-surface-2: #F3F3F3;
     --color-bg-surface-3: #fff; /*-- menus, popovers, etc. --*/
@@ -12,7 +14,7 @@
     --color-text-primary: #575757;
     --color-text-secondary: #646464;
     --color-text-tertiary: #9A9EA4;
-    --color-text-interactive: #216DDF;
+    --color-text-interactive: var(--color-accent);
     --color-text-destructive: #9A1C1C;
     --color-text-interactive-inverted: #fff;
     --color-text-attention-info: #216DDF;
@@ -20,22 +22,45 @@
     --color-text-attention-failure: #9A1C1C;
     
     --color-bg-control: #fff; /*-- menus items, popover items, etc. --*/
+    --color-bg-control-hover: #F5F5F5;
     --color-bg-control-destructive: #fff;
-    --color-bg-control-destructive-hovered: #fff1f1;
-    --color-bg-control-hovered: #F5F5F5;
+    --color-bg-control-destructive-hover: #fff1f1;
     
     --color-bg-attention-success: #ECFFEB;
     --color-bg-attention-failure: #FFF4F4;
+    
+    --color-bg-indicator-active: var(--color-accent);
+    --color-bg-indicator-inactive: #D9D9D9;
+    --color-bg-indicator-inactive-hover: #cbcbcb;
+
+    --color-bg-input-enabled: #fff;
+    --color-bg-input-border-enabled: var(--color-accent);
+    --color-bg-input-interactive-enabled: #1653af;
 
     --color-icon-primary: #464B55;
+    --color-icon-primary-inverted: #fff;
     --color-icon-secondary: #777777;
     --color-icon-tertiary: #BDC1C5;
     --color-icon-interactive-inverted: #9FC7F8;
+
+    --color-bg-interactive: transparent;
+    --color-bg-interactive-hover: #E7E7E7;
+    --color-bg-interactive-active: var(--color-accent);
+    --color-bg-interactive-active-hover: var(--color-accent);
+
+    --color-bg-button: transparent;
+    --color-bg-button-hover: rgba(0 0 0 / 8%);
+    --color-text-button: #646464;
+    --color-text-button-hover: #575757;
+
+    --color-border-primary: #E4E4E4;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --color-accent: #264777;
+
     --color-bg-surface-1: #1E1E1E;
     --color-bg-surface-2: #262626;
     --color-bg-surface-3: #363636;
@@ -49,22 +74,42 @@
     --color-text-attention-info: #264777;
     --color-text-attention-success: #88D8AA;
     --color-text-attention-failure: #FF8686;
+
+    --color-bg-indicator-active: #86BDFF;
+    --color-bg-indicator-inactive: #333333;
+    --color-bg-indicator-inactive-hover: #3d3d3d;
     
     --color-bg-control: #363636; /*-- menus items, popover items, etc. --*/
+    --color-bg-control-hover: #3E3E3E;
     --color-bg-control-destructive: #363636;
-    --color-bg-control-destructive-hovered: #363636;
-    --color-bg-control-hovered: #3E3E3E;
+    --color-bg-control-destructive-hover: #3E3E3E;
     
     --color-bg-attention-success: #1D3326;
     --color-bg-attention-failure: #371F1F;
     
+    --color-bg-indicator-inactive: #333333;
+    
     --color-bg-input-enabled: #1E1E1E;
-    --color-bg-input-border-enabled: #264777;
+    --color-bg-input-border-enabled: #6284b6;
+    --color-bg-input-interactive-enabled: #1653af;
 
-    --color-icon-primary: #B3B3B3;
-    --color-icon-secondary: #7B7D80;
-    --color-icon-tertiary: #484A4D;
+    --color-icon-primary: #cfcfcf;
+    --color-icon-primary-inverted: #B3B3B3;
+    --color-icon-secondary: #C3C3C3;
+    --color-icon-tertiary: #57595B;
     --color-icon-interactive-inverted: #6284B6;
+
+    --color-bg-interactive: transparent;
+    --color-bg-interactive-hover: #2E2E2E;
+    --color-bg-interactive-active: var(--color-accent);
+    --color-bg-interactive-active-hover: var(--color-accent);
+
+    --color-bg-button: transparent;
+    --color-bg-button-hover: rgba(255 255 255 / 6%);
+    --color-text-button: #C3C3C3;
+    --color-text-button-hover: #EDEDED;
+
+    --color-border-primary: #383838;
   }
 }
 

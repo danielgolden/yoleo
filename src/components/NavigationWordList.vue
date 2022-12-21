@@ -98,7 +98,7 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   padding: 16px;
-  background-color: rgba(0 0 0 / 8%);
+  background-color: var(--color-bg-surface-2);
 }
 
 .omni-input {

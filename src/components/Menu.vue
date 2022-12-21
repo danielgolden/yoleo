@@ -36,9 +36,9 @@ export default defineComponent({
   methods: {
     getIconColor(destructive: boolean): string {
       if (destructive) {
-        return '#9A1C1C'
+        return 'var(--color-text-destructive)'
       } else {
-        return '#575757'
+        return 'var(--color-text-primary)'
       }
     },
     handleHover(e: MouseEvent) {
@@ -87,7 +87,7 @@ export default defineComponent({
     padding: 6px;
     z-index: 1000000;
     position: absolute;
-    background: #FFFFFF;
+    background: var(--color-bg-surface-3);
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.05);
     border-radius: 6px;
     list-style-type: none;
@@ -100,19 +100,18 @@ export default defineComponent({
     width: 100%;
     border-radius: 3px;
     padding: 10px;
-    color: #515151;
+    color: var(--color-text-primary);
   }
 
   .menu-item:hover {
-    background-color: #F5F5F5;
+    background-color: var(--color-bg-control-hover);
   }
 
   .destructive-item {
-    color: #9A1C1C;
+    color: var(--color-text-destructive);
   }
 
   .destructive-item:hover {
-    background-color: #fff1f1;
-    /* color: #fff; */
+    background-color: var(--color-bg-control-destructive-hover);
   }
 </style>
