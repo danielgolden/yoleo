@@ -35,9 +35,7 @@ export default defineComponent({
   },
   methods: {
     getIconColor(destructive: boolean): string {
-      if (this.destructiveItemHovered && destructive) {
-        return '#fff'
-      } else if (destructive) {
+      if (destructive) {
         return '#9A1C1C'
       } else {
         return '#575757'
@@ -86,7 +84,7 @@ export default defineComponent({
     align-items: flex-start;
     gap: 2px;
     margin: 0;
-    padding: 8px;
+    padding: 6px;
     z-index: 1000000;
     position: absolute;
     background: #FFFFFF;
@@ -100,8 +98,8 @@ export default defineComponent({
     align-items: center;
     gap: 8px;
     width: 100%;
-    border-radius: 2.75px;
-    padding: 8px;
+    border-radius: 3px;
+    padding: 10px;
     color: #515151;
   }
 
@@ -114,7 +112,7 @@ export default defineComponent({
   }
 
   .destructive-item:hover {
-    background-color: #9A1C1C;
-    color: #fff;
+    background-color: #fff1f1;
+    /* color: #fff; */
   }
 </style>

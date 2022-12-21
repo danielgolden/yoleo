@@ -1,5 +1,71 @@
 :root {
+  color-scheme: light dark;
  --doc-height: 100%;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg-surface-1: #fff;
+    --color-bg-surface-2: #F3F3F3;
+    --color-bg-surface-3: #fff; /*-- menus, popovers, etc. --*/
+    
+    --color-text-primary: #575757;
+    --color-text-secondary: #646464;
+    --color-text-tertiary: #9A9EA4;
+    --color-text-interactive: #216DDF;
+    --color-text-destructive: #9A1C1C;
+    --color-text-interactive-inverted: #fff;
+    --color-text-attention-info: #216DDF;
+    --color-text-attention-success: #2A6744;
+    --color-text-attention-failure: #9A1C1C;
+    
+    --color-bg-control: #fff; /*-- menus items, popover items, etc. --*/
+    --color-bg-control-destructive: #fff;
+    --color-bg-control-destructive-hovered: #fff1f1;
+    --color-bg-control-hovered: #F5F5F5;
+    
+    --color-bg-attention-success: #ECFFEB;
+    --color-bg-attention-failure: #FFF4F4;
+
+    --color-icon-primary: #464B55;
+    --color-icon-secondary: #777777;
+    --color-icon-tertiary: #BDC1C5;
+    --color-icon-interactive-inverted: #9FC7F8;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-surface-1: #1E1E1E;
+    --color-bg-surface-2: #262626;
+    --color-bg-surface-3: #363636;
+
+    --color-text-primary: #EDEDED;
+    --color-text-secondary: #C3C3C3;
+    --color-text-tertiary: #7B7D80;
+    --color-text-interactive: #86BDFF;
+    --color-text-destructive: #FF8686;
+    --color-text-interactive-inverted: #fff;
+    --color-text-attention-info: #264777;
+    --color-text-attention-success: #88D8AA;
+    --color-text-attention-failure: #FF8686;
+    
+    --color-bg-control: #363636; /*-- menus items, popover items, etc. --*/
+    --color-bg-control-destructive: #363636;
+    --color-bg-control-destructive-hovered: #363636;
+    --color-bg-control-hovered: #3E3E3E;
+    
+    --color-bg-attention-success: #1D3326;
+    --color-bg-attention-failure: #371F1F;
+    
+    --color-bg-input-enabled: #1E1E1E;
+    --color-bg-input-border-enabled: #264777;
+
+    --color-icon-primary: #B3B3B3;
+    --color-icon-secondary: #7B7D80;
+    --color-icon-tertiary: #484A4D;
+    --color-icon-interactive-inverted: #6284B6;
+  }
 }
 
 * {
@@ -32,6 +98,7 @@ input {
   width: var(--doc-width);
   height: 100vh; /* fallback for Js load */
   height: var(--doc-height);
+  background-color: var(--color-bg-surface-1);
 }
 
 button {
