@@ -1,7 +1,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import Popover from './Popover.vue';
+import Menu from './Menu.vue';
 import VueClickAway from "vue3-click-away";
 import { store } from "../store";
 
@@ -9,11 +9,12 @@ export default defineComponent({
   data() {
     return {
       contextMenuActive: false,
-      popoverItems: [
+      menuItems: [
         { label: 'Edit', icon: 'edit', onClick: () => this.$emit('editButtonClick'), destructive: false },
         ... store.wordLists.length > 1 ? [{ label: 'Delete', icon: 'delete', onClick: this.deleteGroup, destructive: true }] : [],
       ],
-      store
+      store,
+      wordListName: this.wordListContents.name
     }
   },
   emits: ["wordListHeaderClick", "wordListHeaderInput", "editButtonClick"],
@@ -25,10 +26,10 @@ export default defineComponent({
     wordListIndex: {type: Number, required: true}
   },
   methods: {
-    handlePopoverTrigger() {
+    handleMenuTrigger() {
       this.contextMenuActive = true;
     },
-    closePopover() {
+    closeMenu() {
       this.contextMenuActive = false
     },
     deleteGroup() {
@@ -45,7 +46,7 @@ export default defineComponent({
   watch: {
     'store.wordLists'(newValue) {
       if (newValue.length === 1) {
-        this.popoverItems.splice(1, 1);
+        this.menuItems.splice(1, 1);
       }
     }
   }
@@ -60,14 +61,14 @@ export default defineComponent({
           isCurrentWordList,
       }"
       @click="$emit('wordListHeaderClick')"
-      @contextmenu.prevent="handlePopoverTrigger" 
+      @contextmenu.prevent="handleMenuTrigger" 
     >
-      <Popover 
+      <Menu 
         v-if="contextMenuActive" 
-        classes="word-list-header-popover" 
-        :items="popoverItems" 
-        v-click-away="closePopover"
-        @close-popover="closePopover"
+        classes="word-list-header-menu" 
+        :items="menuItems" 
+        v-click-away="closeMenu"
+        @close-menu="closeMenu"
       />
       <h3
         :class="{
@@ -75,14 +76,20 @@ export default defineComponent({
             isCurrentWordList,
           'word-list-name': true,
         }"
-        @input="(e) => $emit('wordListHeaderInput', (e.target as HTMLInputElement).innerText)"
-        @keydown.enter="(e) => (e.target as HTMLInputElement).blur()"
       >
         <svg  width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="word-list-name-header-icon">
           <path v-if="open" d="M0.512563 0.51256C0.840752 0.18437 1.28587 0 1.75 0H5.25C5.8 0 6.32 0.26 6.65 0.7L7.55 1.9C7.57329 1.93105 7.60348 1.95625 7.6382 1.97361C7.67291 1.99096 7.71119 2 7.75 2H13C13.5523 2 14 2.44772 14 3V3.5H2.75C2.33579 3.5 2 3.83579 2 4.25C2 4.66421 2.33579 5 2.75 5H14.7284C15.327 5 15.7915 5.52235 15.7215 6.11684L15 12.25C15 12.7141 14.8156 13.1592 14.4874 13.4874C14.1592 13.8156 13.7141 14 13.25 14H1.75C0.784 14 0 13.216 0 12.25V1.75C0 1.28587 0.184374 0.84075 0.512563 0.51256Z" fill="#9FC7F8"/>
           <path v-if="!open" fill-rule="evenodd" clip-rule="evenodd" d="M1.75 0C1.28587 0 0.840752 0.18437 0.512563 0.51256C0.184374 0.84075 0 1.28587 0 1.75V12.25C0 13.216 0.784 14 1.75 14H14.25C14.7141 14 15.1592 13.8156 15.4874 13.4874C15.8156 13.1592 16 12.7141 16 12.25V3.75C16 3.28587 15.8156 2.84075 15.4874 2.51256C15.1592 2.18437 14.7141 2 14.25 2H7.75C7.71119 2 7.67291 1.99096 7.6382 1.97361C7.60348 1.95625 7.57329 1.93105 7.55 1.9L6.65 0.7C6.32 0.26 5.8 0 5.25 0H1.75Z" :fill="isCurrentWordList ? '#9FC7F8' : '#BDC1C5'"/>
         </svg>
-        <span ref="wordListHeaderText" :class="{'word-list-name-text': true, 'word-list-name-text-editable': wordListIsInEditMode}" :contenteditable="wordListIsInEditMode">
+        <input 
+          type="text" 
+          v-if="wordListIsInEditMode" 
+          v-model="wordListName"
+          class="header-name-edit-input"
+          @input="$emit('wordListHeaderInput', wordListName)"
+          @keydown.enter="$emit('editButtonClick')"
+        />
+        <span :class="{'word-list-name-text': true, 'word-list-name-text-editable': wordListIsInEditMode}">
           {{ wordListContents && wordListContents.name }}
         </span>
       </h3>
@@ -147,17 +154,29 @@ export default defineComponent({
   background-color: transparent;
 }
 
-.word-list-name-text-editable {
-  border-bottom: 2px dashed rgba(0 0 0 / 40%);
-  border-radius: 4px;
-  position: relative;
-  top: 1px;
-  cursor: text;
-}
-
-.word-list-header-popover {
+.word-list-header-menu {
   position: absolute;
   top: 40px;
   right: 0;
 }
+
+.header-name-edit-input {
+  position: absolute;
+  top: 6px;
+  left: 32px;
+  font-weight: 500;
+  padding: 2px 4px;
+  font-size: 14px;
+  border: none;
+  color: #575757;
+  background-color: #fff;
+  border-radius: 2.5px;
+}
+
+.active-word-list-name-container .header-name-edit-input {
+  font-weight: 600;
+  color: #fff;
+  background-color: #1653af;
+}
+
 </style>

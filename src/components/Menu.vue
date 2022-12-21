@@ -12,7 +12,7 @@ interface Item {
 }
 
 export default defineComponent({
-  emits: ["closePopover"],
+  emits: ["closeMenu"],
   data() {
     return {
       destructiveItemHovered: false,
@@ -51,7 +51,7 @@ export default defineComponent({
       }
     },
     handleItemClick(incomingMethod: () => void) {
-      this.$emit('closePopover');
+      this.$emit('closeMenu');
       incomingMethod();
     },
   },
@@ -60,14 +60,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <Menu :class="{'popover': true, [classes as string]: classes}">
+  <Menu :class="{'menu': true, [classes as string]: classes}">
     <MenuItems as="ul" static>
       <MenuItem
         v-for="item in items"
         :key="item.label"
         @click.stop="handleItemClick(item.onClick)"
         as="li"
-        :class="{'popover-item': true, 'destructive-item': item.destructive}"
+        :class="{'menu-item': true, 'destructive-item': item.destructive}"
         @mouseover="(e) => { if (item.destructive) handleHover(e) }" 
         @mouseleave="(e) => { if (item.destructive) handleHover(e) }"
       >
@@ -79,7 +79,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-  .popover {
+  .menu {
     display: flex;
     min-width: 180px;
     flex-direction: column;
@@ -95,7 +95,7 @@ export default defineComponent({
     list-style-type: none;
   }
 
-  .popover-item {
+  .menu-item {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -105,7 +105,7 @@ export default defineComponent({
     color: #515151;
   }
 
-  .popover-item:hover {
+  .menu-item:hover {
     background-color: #F5F5F5;
   }
 

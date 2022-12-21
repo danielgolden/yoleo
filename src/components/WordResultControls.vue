@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { store } from '../store';
-import Popover from './Popover.vue';
+import Menu from './Menu.vue';
 
 export default defineComponent({
   emits: ["wordOutcomeSuccess", "wordOutcomeFailure"],
