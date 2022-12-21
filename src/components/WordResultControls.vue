@@ -161,6 +161,6 @@ export default defineComponent({
 }
 
 .main-menu-open {
-  translate: 306px;
+  transform: translateX(306px);
 }
 </style>

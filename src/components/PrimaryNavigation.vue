@@ -114,12 +114,12 @@ export default defineComponent({
   left: 0;
   background-color: var(--color-bg-surface-2);
   z-index: 10;
-  translate: -300px;
-  transition: translate 300ms cubic-bezier(.215, .61, .355, 1);
+  transform: translateX(-300px);
+  transition: transform 300ms cubic-bezier(.215, .61, .355, 1);
 }
 
 .open {
-  translate: 0;
+  transform: translateX(0);
 }
 
 .omni-input {
