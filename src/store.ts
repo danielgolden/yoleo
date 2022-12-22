@@ -22,4 +22,5 @@ export const store = reactive({
   celebrationActive: false,
   activationResetDelay: 2000,
   newWordListRecentlyAdded: false,
+  anEditModeIsActive: false
 });

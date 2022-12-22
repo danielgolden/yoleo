@@ -168,10 +168,12 @@ export default defineComponent({
     }
 
     window.addEventListener("keydown", (e) => {
-      if (e.code === "ArrowRight" || e.code === "ArrowDown") {
-        this.advanceWord();
-      } else if (e.code === "ArrowLeft" || e.code === "ArrowUp") {
-        this.regressWord();
+      if (!this.store.anEditModeIsActive) {
+        if (e.code === "ArrowRight" || e.code === "ArrowDown") {
+          this.advanceWord();
+        } else if (e.code === "ArrowLeft" || e.code === "ArrowUp") {
+          this.regressWord();
+        }
       }
 
       const slashWasPressed = e.key === "/";
@@ -234,6 +236,7 @@ export default defineComponent({
       'current-word-failed': wordFailed,
       'current-word-with-main-menu-open': store.mainMenuOpen,
     }"
+    data-testid="currentWord"
     v-if="currentWord?.length > 0"
   >
     {{currentWordFormatted}}

@@ -42,6 +42,9 @@ export default defineComponent({
     editMode(newValue, oldValue) {
       if (newValue) {
         this.hidden = false;
+        this.store.anEditModeIsActive = true;
+      } else {
+        this.store.anEditModeIsActive = false;
       }
     },
     isCurrentWordList(newValue) {
