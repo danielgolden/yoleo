@@ -99,7 +99,7 @@ export default defineComponent({
         class="edit-button"
       >
         <Icon v-if="!wordListIsInEditMode" name="edit" color="var(--color-icon-interactive-inverted)" />
-        <Icon v-if="wordListIsInEditMode" name="check" color="var(--color-icon-primary-inverted)" />
+        <Icon v-if="wordListIsInEditMode" name="check" :color="isCurrentWordList ? 'var(--color-icon-interactive-inverted)' : 'var(--color-icon-primary)'" />
       </button>
     </div>
 </template>
