@@ -185,6 +185,7 @@ export default defineComponent({
   watch: {
     'store.currentWordListIndex'() {
       this.saveGameData();
+      this.newWordListReviewUnit();
     },
     'store.currentWordIndex'() {
       this.store.wordCompleted = false;
