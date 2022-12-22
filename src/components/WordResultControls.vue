@@ -39,6 +39,7 @@ export default defineComponent({
 
       if (success) {
         this.currentReviewUnitWord.successful = true
+        this.currentReviewUnitWord.reviewed = true
         store.wordCompleted = true;
         
         setTimeout(() => {

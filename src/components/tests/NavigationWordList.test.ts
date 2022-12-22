@@ -23,7 +23,6 @@ describe('NavigationWordList', async () => {
     const newWordText = (await screen.findByTestId("currentWord")).innerText;
     expect(initialWordText).toEqual(newWordText);
   });
-
 });
 
 

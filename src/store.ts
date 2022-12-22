@@ -9,7 +9,7 @@ export const store = reactive({
       mostRecentWordIndex: 0,
     },
   ],
-  mainMenuOpen: false,
+  mainMenuOpen: true,
   currentWordIndex: 0,
   currentWordListIndex: 0,
   currentWordListReviewUnit: new wordListReviewUnit(["default", "bro"]),

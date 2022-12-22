@@ -58,7 +58,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Menu :class="{'menu': true, [classes as string]: classes}">
+  <Menu :class="{'menu': true, [classes as string]: classes}" data-testid="contextMenu">
     <MenuItems as="ul" static>
       <MenuItem
         v-for="item in items"

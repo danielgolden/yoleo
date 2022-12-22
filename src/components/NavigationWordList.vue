@@ -60,12 +60,13 @@ export default defineComponent({
 
 <template>
   <div 
-  :class="
-    {
-      'word-list-container': true,
-      'active-word-list-container': isCurrentWordList,
-    }"
-    >
+    :class="
+      {
+        'word-list-container': true,
+        'active-word-list-container': isCurrentWordList,
+      }"
+    data-testid="wordList"
+  >
     <wordListHeader
       :isCurrentWordList="isCurrentWordList"
       :wordListContents="wordList"

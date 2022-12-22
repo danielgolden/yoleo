@@ -229,6 +229,7 @@ export default defineComponent({
   <SuccessCelebration
     v-if="store.celebrationActive"
   />
+  <WordReviewUnitProgressBar />
   <WordResultControls />
   <h1
     :class="{

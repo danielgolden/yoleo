@@ -59,7 +59,7 @@ export default defineComponent({
       ref="omniInput"
     />
     <hr>
-    <nav class="word-lists">
+    <nav class="word-lists" data-testid="wordLists">
       <NavigationWordList
         v-for="(wordList, index) in store.wordLists"
         :key="wordList"

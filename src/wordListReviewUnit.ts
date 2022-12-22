@@ -14,7 +14,7 @@ export default class wordListReviewUnit {
     this.totalWordCount = this.words.length;
     this.reviewedCount = (() => this.getCount("reviewed", true))();
     this.unreviewedCount = this.totalWordCount - this.reviewedCount;
-    this.reviewedPercentage = this.totalWordCount / this.reviewedCount;
+    this.reviewedPercentage = this.reviewedCount / this.totalWordCount;
     this.failureCount =
       (() => this.getCount("successful", false))() - this.unreviewedCount;
     this.successfulCount = (() => this.getCount("successful", true))();
