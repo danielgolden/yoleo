@@ -178,7 +178,7 @@ export default defineComponent({
 }
 
 .main-menu-open {
-  translate: 100px;
+  translate: 150px;
 }
 
 .progress-bar {

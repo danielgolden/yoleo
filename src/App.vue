@@ -266,7 +266,7 @@ export default defineComponent({
 }
 
 .current-word-with-main-menu-open {
-  translate: 100px;
+  translate: 150px;
 }
 
 .current-word-failed {
