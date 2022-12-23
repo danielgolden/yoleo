@@ -30,7 +30,7 @@ export default defineComponent({
   },
   watch: {
     confettiActive(newValue, oldValue) {
-      if (newValue) this.playCelebrationAudio();
+      // if (newValue) this.playCelebrationAudio();
     }
   }
 });
