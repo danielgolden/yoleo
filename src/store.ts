@@ -16,6 +16,7 @@ export const store = reactive({
   wordCompleted: false,
   gameSettings: {
     case: "sentence", // upper, lower, sentence
+    audio: false, // upper, lower, sentence
     // order: 'chronologial', // random
     // wordLength
   },

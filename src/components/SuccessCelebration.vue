@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import ConfettiExplosion from "vue-confetti-explosion";
 import celebrationSound from "../assets/celebration-sound.mp3";
+import { store } from "../store";
 
 export default defineComponent({
   data() {
@@ -30,7 +31,7 @@ export default defineComponent({
   },
   watch: {
     confettiActive(newValue, oldValue) {
-      // if (newValue) this.playCelebrationAudio();
+      if (newValue && store.gameSettings.audio) this.playCelebrationAudio();
     }
   }
 });

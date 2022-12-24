@@ -10,7 +10,7 @@ export default defineComponent({
     return {
       primaryNavigationActive: true,
       omniInputValue: "",
-      store
+      store,
     };
   },
   methods: {

@@ -8,6 +8,10 @@ interface Item {
   label: string;
   icon: string;
   destructive: boolean;
+  heading: boolean;
+  separator: boolean;
+  active: boolean;
+  switch: boolean;
   onClick: () => void;
 }
 
@@ -23,6 +27,7 @@ export default defineComponent({
     items: {type: Array as PropType<Item[]>, required: true},
     classes: {type: String, required: false},
     icon: { type: String, required: false },
+    settingsMenu: { type: Boolean, required: false }
   },
   directives: {
     ClickAway: directive
@@ -58,19 +63,24 @@ export default defineComponent({
 </script>
 
 <template>
-  <Menu :class="{'menu': true, [classes as string]: classes}" data-testid="contextMenu">
+  <Menu :class="{ 'menu': true, 'settings-menu': settingsMenu, [classes as string]: classes}" data-testid="contextMenu">
     <MenuItems as="ul" static>
       <MenuItem
         v-for="item in items"
         :key="item.label"
         @click.stop="handleItemClick(item.onClick)"
-        as="li"
-        :class="{'menu-item': true, 'destructive-item': item.destructive}"
+        :as="item.separator ? 'hr' : 'li'"
+        :class="{
+          'menu-item': true, 
+          'destructive-item': item.destructive,
+          'heading-menu-item': item.heading
+        }"
         @mouseover="(e) => { if (item.destructive) handleHover(e) }" 
         @mouseleave="(e) => { if (item.destructive) handleHover(e) }"
       >
-        <Icon :name="item.icon" :color="getIconColor(item.destructive)" />
+        <Icon v-if="item.icon" :opacity="settingsMenu && '.5'" :name="item.icon" :color="getIconColor(item.destructive)" />
         {{ item.label }}
+        <Icon v-if="item.active" name="check" color="var(--color-text-interactive)" />
       </MenuItem>
     </MenuItems>
   </Menu>
@@ -92,19 +102,50 @@ export default defineComponent({
     border-radius: 6px;
     list-style-type: none;
   }
+  
+  .settings-menu {
+    min-width: 200px;
+  }
 
   .menu-item {
     display: flex;
-    align-items: center;
     gap: 8px;
     width: 100%;
     border-radius: 3px;
     padding: 10px;
-    color: var(--color-text-primary);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .settings-menu .menu-item {
+    display: grid;
+    grid-template-columns: 22px 1fr auto;
+    align-items: center;
   }
 
   .menu-item:hover {
     background-color: var(--color-bg-control-hover);
+  }
+
+  .settings-menu .heading-menu-item {
+    display: flex;
+    cursor: default;
+    padding-bottom: 8px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  hr.menu-item {
+    width: calc(100% - 18px);
+    border: none;
+    height: 1px;
+    padding: 0;
+    background-color: var(--color-border-secondary);
+  }
+
+  .heading-menu-item:hover {
+    background-color: transparent;
   }
 
   .destructive-item {

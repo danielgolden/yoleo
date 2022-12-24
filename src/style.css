@@ -54,6 +54,7 @@
     --color-text-button-hover: #575757;
 
     --color-border-primary: #E4E4E4;
+    --color-border-secondary: #F1F1F1;
   }
 }
 
@@ -110,6 +111,7 @@
     --color-text-button-hover: #EDEDED;
 
     --color-border-primary: #383838;
+    --color-border-secondary: rgba(255 255 255 / 7%);
   }
 }
 
