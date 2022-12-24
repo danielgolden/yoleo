@@ -8,7 +8,9 @@ export default defineComponent({
     return {
       destructiveItemHovered: false,
       store,
-      reviewedPercentage: 0
+      reviewedPercentage: 0,
+      finalPointScaleAnimation: new Animation(),
+      finalPointOutlineAnimation: new Animation(),
     };
   },
   watch: {
@@ -20,14 +22,16 @@ export default defineComponent({
       },
       deep: true
     },
-    reviewedPercentage(newValue) {
+    reviewedPercentage(newValue, oldValue) {
+      const finalProgressPoint = (this.$refs.finalProgressPoint as HTMLElement);
+
       if (newValue === 100) {
-        const finalProgressPoint = (this.$refs.finalProgressPoint as HTMLElement);
-        const finalProgressOutline = (this.$refs.finalProgressPointOutline as HTMLElement);
-        
         this.animateFinalPointJiggle(finalProgressPoint).play();
-        this.animateFinalPointScale(finalProgressPoint).play();
-        this.animateFinalPointScale(finalProgressOutline).play();
+
+        this.finalPointScaleAnimation = this.animateFinalPointScale(finalProgressPoint);
+        this.finalPointScaleAnimation.play();
+      } else if (newValue < oldValue) {
+        this.finalPointScaleAnimation.cancel();
       }
     }
   },
@@ -111,10 +115,6 @@ export default defineComponent({
           :style="`width: ${reviewedPercentage}%`"
         />
       </svg>
-      <svg class="final-progress-point-outline" ref="finalProgressPointOutline" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- <circle cx="8" cy="8" r="7" stroke="#FFF4E2" stroke-width=".5" stroke-dasharray="1 1" stroke-linecap="round"></circle>
-        <circle cx="8" cy="8" r="6.25" fill="#FFF4E2"></circle> -->
-      </svg>
       <div class="progress-points">
         <span :class="{'progress-point': true, 'progress-point-reached': true}"></span>
         <span :class="{'progress-point': true, 'progress-point-reached': reviewedPercentage >= 25}"></span>
@@ -151,16 +151,6 @@ export default defineComponent({
   
   100% {
     box-shadow: 0 0 0 59px #ffaa29;
-  }
-}
-
-@keyframes final-point-outline-spin {
-  0% {
-    rotate: 0deg;
-  }
-  
-  100% {
-    rotate: 180deg;
   }
 }
 
@@ -256,17 +246,5 @@ export default defineComponent({
 
 .progress-bar-fill {
   transition: all var(--animation-duration) cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
-.final-progress-point-outline {
-  position: absolute;
-  top: 5px;
-  right: 0;
-  z-index: -1;
-  transform: scale(2);
-  animation: final-point-outline-spin;
-  animation-iteration-count: infinite;
-  animation-duration: 3s;
-  animation-timing-function: linear;
 }
 </style>
