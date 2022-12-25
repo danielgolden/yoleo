@@ -253,7 +253,9 @@ export default defineComponent({
   text-align: center;
   margin: 0 auto;
   z-index: 1;
-  transition: all 300ms cubic-bezier(.215, .61, .355, 1);
+  transition: 
+    all 300ms cubic-bezier(.215, .61, .355, 1),
+    opacity 150ms cubic-bezier(.215, .61, .355, 1);
 }
 
 .highlighted-char,
@@ -267,6 +269,12 @@ export default defineComponent({
 
 .current-word-with-main-menu-open {
   translate: 150px;
+}
+
+@media (max-width: 400px) {
+  .current-word-with-main-menu-open {
+    opacity: 0;
+  } 
 }
 
 .current-word-failed {

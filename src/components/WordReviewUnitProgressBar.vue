@@ -164,12 +164,20 @@ export default defineComponent({
   place-items: center;
   transition: 
     all var(--animation-duration) cubic-bezier(0.215, 0.61, 0.355, 1),
-    translate 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    translate 300ms cubic-bezier(0.215, 0.61, 0.355, 1),
+    opacity 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .main-menu-open {
   translate: 150px;
 }
+
+@media (max-width: 400px) {
+  .main-menu-open.progress-bar-container {
+    opacity: 0;
+  } 
+}
+
 
 .progress-bar {
   position: relative;

@@ -82,7 +82,8 @@ export default defineComponent({
     :class="{
       'word-outcome-button': true,
       'success-outcome-button': true,
-      'success-outcome-button-activated': activated === 'success'
+      'success-outcome-button-activated': activated === 'success',
+      'main-menu-open': store.mainMenuOpen
     }"
     @click="handleButtonClick(true)"
   >
@@ -100,10 +101,11 @@ export default defineComponent({
 <style scoped>
 .word-outcome-button {
   --transition-timing: 300ms;
-
   display: grid;
   place-items: center;
-  width: 123px;
+  width: 18vw;
+  min-width: 75px;
+  max-width: 123px;
   height: 190px;
   position: absolute;
   top: 50%;
@@ -163,5 +165,11 @@ export default defineComponent({
 
 .main-menu-open {
   transform: translateX(306px);
+}
+
+@media (max-width: 400px) {
+  .main-menu-open {
+    opacity: 0;
+  } 
 }
 </style>
