@@ -167,7 +167,7 @@ export default defineComponent({
   transform: translateX(306px);
 }
 
-@media (max-width: 400px) {
+@media (max-width: 700px) {
   .main-menu-open {
     opacity: 0;
   } 

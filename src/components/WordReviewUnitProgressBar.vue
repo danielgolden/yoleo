@@ -172,7 +172,7 @@ export default defineComponent({
   translate: 150px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 700px) {
   .main-menu-open.progress-bar-container {
     opacity: 0;
   } 

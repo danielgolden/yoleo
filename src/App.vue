@@ -271,7 +271,7 @@ export default defineComponent({
   translate: 150px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 700px) {
   .current-word-with-main-menu-open {
     opacity: 0;
   } 
