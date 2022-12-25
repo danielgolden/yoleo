@@ -99,7 +99,7 @@ export default defineComponent({
   >
 
     <span role="progressbar" aria-valuenow="23" class="progress-bar">
-      <svg width="500" height="4">
+      <svg class="progress-bar-svg" height="4">
         <rect
           height="4"
           width="500"
@@ -159,7 +159,7 @@ export default defineComponent({
   position: absolute;
   width: 500px;
   height: 50px;
-  top: 0;
+  top: 10px;
   display: grid;
   place-items: center;
   transition: 
@@ -243,8 +243,13 @@ export default defineComponent({
   animation-timing-function: cubic-bezier(.25, .46, .45, .94);
 }
 
-
 .progress-bar-fill {
   transition: all var(--animation-duration) cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.progress-bar-svg {
+  width: 33vw;
+  min-width: 150px;
+  max-width: 500px;
 }
 </style>
