@@ -66,7 +66,6 @@ export default defineComponent({
       classes="game-settings-menu" 
       :items="settingsMenuItems" 
       v-click-away="closeMenu"
-      @close-menu="closeMenu"
       :settingsMenu="true"
     />
   </div>
