@@ -19,7 +19,8 @@
     "vercel": "^28.8.0",
     "vue": "^3.2.45",
     "vue-confetti-explosion": "^1.0.2",
-    "vue3-click-away": "^1.2.4"
+    "vue3-click-away": "^1.2.4",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@testing-library/vue": "^6.6.1",

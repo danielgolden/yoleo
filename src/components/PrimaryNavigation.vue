@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import NavigationWordList from "./NavigationWordList.vue";
+import draggable from 'vuedraggable'
 import { store } from '../store';
 import Settings from "./Settings.vue";
 
@@ -11,6 +12,7 @@ export default defineComponent({
       primaryNavigationActive: true,
       omniInputValue: "",
       store,
+      drag: false,
     };
   },
   methods: {
@@ -22,7 +24,7 @@ export default defineComponent({
     },
     handleNewWordListClick() {
       this.$emit('create-new-word-list');
-    }
+    },
   },
   watch: {
     'store.mainMenuOpen'(newValue) {
@@ -38,8 +40,10 @@ export default defineComponent({
           omniInput.blur();
         }
     }
-  }
-  
+  },
+  components: {
+    draggable,
+  },
 });
 </script>
 
@@ -60,16 +64,23 @@ export default defineComponent({
     />
     <hr>
     <nav class="word-lists" data-testid="wordLists">
-      <NavigationWordList
-        v-for="(wordList, index) in store.wordLists"
-        :key="wordList"
-        :wordList="wordList"
-        :wordListIndex="index"
-        :isCurrentWordList="index === store.currentWordListIndex"
-        @new-word-selected="(incomingWordIndex: number) => $emit('newWordSelected', incomingWordIndex)"
-        @delete-word="(wordIndex: number) => $emit('delete-word', wordIndex)"
-        v-bind="$attrs"
-      />
+      <draggable 
+        v-model="store.wordLists" 
+        @start="drag=true" 
+        @end="drag=false" 
+        item-key="id">
+        <template #item="{element, index}">
+          <NavigationWordList
+            :key="index"
+            :wordList="element"
+            :wordListIndex="index"
+            :isCurrentWordList="index === store.currentWordListIndex"
+            @new-word-selected="(incomingWordIndex: number) => $emit('newWordSelected', incomingWordIndex)"
+            @delete-word="(wordIndex: number) => $emit('delete-word', wordIndex)"
+            v-bind="$attrs"
+          />
+        </template>
+      </draggable>
     </nav>
     <footer class="navigation-footer">
       <button class="new-group-button" @click="handleNewWordListClick">
