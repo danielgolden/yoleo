@@ -24,20 +24,25 @@ export default defineComponent({
       'word-list-item': true,
       'active-word-list-item': isActiveWordListItem,
     }"
-    @click="$emit('newWordSelected', wordListItemIndex)"
+    @click="!wordListIsInEditMode && $emit('newWordSelected', wordListItemIndex)"
     :key="`${wordText}${wordListItemIndex}`"
   >
     <div class="word-list-item-and-indicator-container">
       <span class="word-state-indicator"></span>
       {{ wordText }}
     </div>
-    <button
-      v-if="wordListIsInEditMode"
-      class="delete-word-button"
-      @click.stop="$emit('deleteWord', wordListItemIndex)"
-    >
-      <img :src="deleteIcon2" alt="Delete icon">
-    </button>
+    <div class="word-edit-controls">
+      <button
+        v-if="wordListIsInEditMode"
+        class="delete-word-button"
+        @click.stop="$emit('deleteWord', wordListItemIndex)"
+      >
+        <img :src="deleteIcon2" alt="Delete icon">
+      </button>
+      <span class="drag-handle" v-if="wordListIsInEditMode">
+        <Icon name="dragHandle" color="var(--color-icon-tertiary)" />
+      </span>
+    </div>
   </li>
 </template>
 
@@ -93,5 +98,25 @@ export default defineComponent({
   border: none;
   background-color: transparent;
   padding: 0;
+}
+
+.word-edit-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.drag-handle {
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  cursor: grab;
+}
+
+.drag-handle:active {
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  cursor: grabbing;
 }
 </style>

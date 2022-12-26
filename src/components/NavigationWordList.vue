@@ -85,10 +85,12 @@ export default defineComponent({
     />
     <ul v-if="open" class="word-list">
       <draggable 
+        :disabled="!editMode"
         v-model="wordList.words" 
         group="people" 
         @start="drag=true" 
-        @end="drag=false" 
+        @end="drag = false " 
+        handle=".drag-handle"
         item-key="id">
         <template #item="{element, index}">
           <WordListItem 
