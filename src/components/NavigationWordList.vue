@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import WordListItem from './WordListItem.vue';
+import draggable from 'vuedraggable'
 import { store } from "../store";
 
 export default defineComponent({
@@ -10,7 +11,8 @@ export default defineComponent({
       hidden: false,
       active: false,
       editMode: false,
-      store
+      store,
+      drag: false,
     };
   },
   props: {
@@ -51,6 +53,9 @@ export default defineComponent({
       if (!newValue) this.editMode = false;
     },
   },
+  components: {
+    draggable,
+  },
   mounted: function () {
     if (this.store.newWordListRecentlyAdded) {
       this.editMode = true;
@@ -79,15 +84,23 @@ export default defineComponent({
       @edit-button-click="handleEditModeButton"
     />
     <ul v-if="open" class="word-list">
-      <WordListItem 
-        v-for="(word, index) in wordList.words"
-        :isActiveWordListItem="index === store.currentWordIndex"
-        :wordListItemIndex="index"
-        :wordText="word"
-        :wordListIsInEditMode="editMode"
-        @new-word-selected="(wordListItemIndex: number) => $emit('newWordSelected', wordListItemIndex)"
-        @delete-word="(wordListItemIndex: number) => $emit('deleteWord', wordListItemIndex)"
-      />
+      <draggable 
+        v-model="wordList.words" 
+        group="people" 
+        @start="drag=true" 
+        @end="drag=false" 
+        item-key="id">
+        <template #item="{element, index}">
+          <WordListItem 
+            :isActiveWordListItem="index === store.currentWordIndex"
+            :wordListItemIndex="index"
+            :wordText="element"
+            :wordListIsInEditMode="editMode"
+            @new-word-selected="(wordListItemIndex: number) => $emit('newWordSelected', wordListItemIndex)"
+            @delete-word="(wordListItemIndex: number) => $emit('deleteWord', wordListItemIndex)"
+          />
+        </template>
+      </draggable>
     </ul>
   </div>
 </template>
