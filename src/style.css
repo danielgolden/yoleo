@@ -55,6 +55,8 @@
 
     --color-border-primary: #E4E4E4;
     --color-border-secondary: #F1F1F1;
+
+    --color-box-shadow: rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -112,6 +114,8 @@
 
     --color-border-primary: #383838;
     --color-border-secondary: rgba(255 255 255 / 7%);
+
+    --color-box-shadow: rgba(0, 0, 0, 0.075);
   }
 }
 

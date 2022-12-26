@@ -128,7 +128,7 @@ export default defineComponent({
   border: none;
   padding: 13px 8px 11px 32px;
   font-size: 14px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 3px 5px var(--color-box-shadow), 0px 1px 2px var(--color-box-shadow);
   border-radius: 6px;
   background-image: url('../assets/icon-plus.svg');
   background-color: var(--color-bg-input-enabled);
@@ -138,10 +138,24 @@ export default defineComponent({
 
 .omni-input:focus {
   box-shadow: 
-    0px 3px 5px rgba(0, 0, 0, 0.05), 
-    0px 1px 2px rgba(0, 0, 0, 0.05),
+    0px 3px 5px var(--color-box-shadow), 
+    0px 1px 2px var(--color-box-shadow),
     0 0 0 2px var(--color-bg-input-border-enabled);
   outline: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .omni-input {
+    box-shadow: none;
+  }
+
+  .omni-input:focus {
+    box-shadow: 
+      0px 3px 5px transparent, 
+      0px 1px 2px transparent,
+      0 0 0 2px var(--color-bg-input-border-enabled);
+    outline: none;
+  }
 }
 
 hr {

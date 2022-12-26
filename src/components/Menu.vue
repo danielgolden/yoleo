@@ -98,7 +98,7 @@ export default defineComponent({
     z-index: 1000000;
     position: absolute;
     background: var(--color-bg-surface-3);
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 5px 10px var(--color-box-shadow), 0px 1px 2px var(--color-box-shadow);
     border-radius: 6px;
     list-style-type: none;
   }
