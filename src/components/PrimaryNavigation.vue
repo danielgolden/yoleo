@@ -25,7 +25,7 @@ export default defineComponent({
     handleNewWordListClick() {
       this.$emit('create-new-word-list');
     },
-    handleDragEndEvent(e: CustomEvent) {
+    handleDragEndEvent(e: VueDraggableEvent) {
       const activeItemIsBeingDragged = e.oldIndex === store.currentWordListIndex
       if (activeItemIsBeingDragged) store.currentWordListIndex = e.newIndex
       this.drag = false

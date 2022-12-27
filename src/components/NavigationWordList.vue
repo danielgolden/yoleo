@@ -42,11 +42,11 @@ export default defineComponent({
       });
       if (this.wordList) this.wordList.name = newName;
     },
-    handleDragEndEvent(e: CustomEvent) {
+    handleDragEndEvent(e: VueDraggableEvent) {
       const activeItemIsBeingDragged = e.oldIndex === store.currentWordIndex;
       const activeItemIsBeforeDragged = e.oldIndex > store.currentWordIndex;
       const activeItemIsAfterDragged = e.oldIndex < store.currentWordIndex;
-      const lengthOfCurrentWordList = store.wordLists[store.currentWordListIndex].length
+      const lengthOfCurrentWordList = store.wordLists[store.currentWordListIndex].words.length
       const currentItemIsLastItem = store.currentWordIndex !== lengthOfCurrentWordList
       const currentItemIsFirstItem = store.currentWordIndex !== lengthOfCurrentWordList
 

@@ -26,3 +26,8 @@ interface WordListReviewUnitWord {
   reviewed: boolean;
   successful: boolean;
 }
+
+interface VueDraggableEvent {
+  oldIndex: number;
+  newIndex: number
+}
