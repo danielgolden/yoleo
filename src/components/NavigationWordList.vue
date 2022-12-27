@@ -1,11 +1,16 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import WordListItem from './WordListItem.vue';
-import draggable from 'vuedraggable'
+import WordListItem from "./WordListItem.vue";
+import draggable from "vuedraggable";
 import { store } from "../store";
 
 export default defineComponent({
-  emits: ["updateCurrentWordList", "newWordSelected", "updatewordListHeader", "deleteWord"],
+  emits: [
+    "updateCurrentWordList",
+    "newWordSelected",
+    "updatewordListHeader",
+    "deleteWord",
+  ],
   data() {
     return {
       hidden: false,
@@ -16,7 +21,7 @@ export default defineComponent({
     };
   },
   props: {
-    wordList: {type: Object as PropType<WordList>, required: true},
+    wordList: { type: Object as PropType<WordList>, required: true },
     wordListIndex: Number,
     isCurrentWordList: Boolean,
   },
@@ -27,18 +32,39 @@ export default defineComponent({
     handlewordListHeaderContainerClick() {
       if (!this.editMode) {
         this.hidden = this.isCurrentWordList && !this.hidden;
-        this.$emit('updateCurrentWordList', this.wordListIndex);
+        this.$emit("updateCurrentWordList", this.wordListIndex);
       }
     },
     handlewordListHeaderChange(newName: string) {
-      this.$emit('updatewordListHeader', { newName, wordListIndex: this.wordListIndex })
+      this.$emit("updatewordListHeader", {
+        newName,
+        wordListIndex: this.wordListIndex,
+      });
       if (this.wordList) this.wordList.name = newName;
+    },
+    handleDragEndEvent(e: CustomEvent) {
+      const activeItemIsBeingDragged = e.oldIndex === store.currentWordIndex;
+      const activeItemIsBeforeDragged = e.oldIndex > store.currentWordIndex;
+      const activeItemIsAfterDragged = e.oldIndex < store.currentWordIndex;
+      const lengthOfCurrentWordList = store.wordLists[store.currentWordListIndex].length
+      const currentItemIsLastItem = store.currentWordIndex !== lengthOfCurrentWordList
+      const currentItemIsFirstItem = store.currentWordIndex !== lengthOfCurrentWordList
+
+      if (activeItemIsBeingDragged) {
+        store.currentWordIndex = e.newIndex
+      } else if (activeItemIsBeforeDragged && !currentItemIsLastItem) {
+        store.currentWordIndex++;
+      } else if (activeItemIsAfterDragged && currentItemIsFirstItem) {
+        store.currentWordIndex--;
+      }
+      
+      this.drag = false;
     },
   },
   computed: {
     open() {
       return this.isCurrentWordList && !this.hidden;
-    }
+    },
   },
   watch: {
     editMode(newValue, oldValue) {
@@ -60,17 +86,16 @@ export default defineComponent({
     if (this.store.newWordListRecentlyAdded) {
       this.editMode = true;
     }
-  }
+  },
 });
 </script>
 
 <template>
-  <div 
-    :class="
-      {
-        'word-list-container': true,
-        'active-word-list-container': isCurrentWordList,
-      }"
+  <div
+    :class="{
+      'word-list-container': true,
+      'active-word-list-container': isCurrentWordList,
+    }"
     data-testid="wordList"
   >
     <wordListHeader
@@ -84,16 +109,17 @@ export default defineComponent({
       @edit-button-click="handleEditModeButton"
     />
     <ul v-if="open" class="word-list">
-      <draggable 
+      <draggable
         :disabled="!editMode"
-        v-model="wordList.words" 
-        group="people" 
-        @start="drag=true" 
-        @end="drag = false " 
+        v-model="wordList.words"
+        group="people"
+        @start="drag = true"
+        @end="handleDragEndEvent"
         handle=".drag-handle"
-        item-key="id">
-        <template #item="{element, index}">
-          <WordListItem 
+        item-key="id"
+      >
+        <template #item="{ element, index }">
+          <WordListItem
             :isActiveWordListItem="index === store.currentWordIndex"
             :wordListItemIndex="index"
             :wordText="element"
@@ -135,5 +161,4 @@ export default defineComponent({
   padding-inline: 6px;
   list-style-type: none;
 }
-
 </style>

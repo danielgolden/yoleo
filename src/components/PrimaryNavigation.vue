@@ -25,6 +25,11 @@ export default defineComponent({
     handleNewWordListClick() {
       this.$emit('create-new-word-list');
     },
+    handleDragEndEvent(e: CustomEvent) {
+      const activeItemIsBeingDragged = e.oldIndex === store.currentWordListIndex
+      if (activeItemIsBeingDragged) store.currentWordListIndex = e.newIndex
+      this.drag = false
+    }
   },
   watch: {
     'store.mainMenuOpen'(newValue) {
@@ -67,7 +72,7 @@ export default defineComponent({
       <draggable 
         v-model="store.wordLists" 
         @start="drag=true" 
-        @end="drag=false" 
+        @end="handleDragEndEvent" 
         item-key="id">
         <template #item="{element, index}">
           <NavigationWordList
