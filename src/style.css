@@ -1,50 +1,50 @@
 :root {
   color-scheme: light dark;
- --doc-height: 100%;
+  --doc-height: 100%;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --color-accent: #216DDF;
+    --color-accent: #216ddf;
 
     --color-bg-surface-1: #fff;
-    --color-bg-surface-2: #F3F3F3;
+    --color-bg-surface-2: #f3f3f3;
     --color-bg-surface-3: #fff; /*-- menus, popovers, etc. --*/
-    
+
     --color-text-primary: #575757;
     --color-text-secondary: #646464;
-    --color-text-tertiary: #9A9EA4;
+    --color-text-tertiary: #9a9ea4;
     --color-text-interactive: var(--color-accent);
-    --color-text-destructive: #9A1C1C;
+    --color-text-destructive: #9a1c1c;
     --color-text-interactive-inverted: #fff;
-    --color-text-attention-info: #216DDF;
-    --color-text-attention-success: #2A6744;
-    --color-text-attention-failure: #9A1C1C;
-    
+    --color-text-attention-info: #216ddf;
+    --color-text-attention-success: #2a6744;
+    --color-text-attention-failure: #9a1c1c;
+
     --color-bg-control: #fff; /*-- menus items, popover items, etc. --*/
-    --color-bg-control-hover: #F5F5F5;
+    --color-bg-control-hover: #f5f5f5;
     --color-bg-control-destructive: #fff;
     --color-bg-control-destructive-hover: #fff1f1;
-    
-    --color-bg-attention-success: #ECFFEB;
-    --color-bg-attention-failure: #FFF4F4;
-    
+
+    --color-bg-attention-success: #ecffeb;
+    --color-bg-attention-failure: #fff4f4;
+
     --color-bg-indicator-active: var(--color-accent);
-    --color-bg-indicator-inactive: #D9D9D9;
+    --color-bg-indicator-inactive: #d9d9d9;
     --color-bg-indicator-inactive-hover: #cbcbcb;
 
     --color-bg-input-enabled: #fff;
     --color-bg-input-border-enabled: var(--color-accent);
     --color-bg-input-interactive-enabled: #1653af;
 
-    --color-icon-primary: #464B55;
+    --color-icon-primary: #464b55;
     --color-icon-primary-inverted: #fff;
     --color-icon-secondary: #777777;
-    --color-icon-tertiary: #BDC1C5;
-    --color-icon-interactive-inverted: #9FC7F8;
+    --color-icon-tertiary: #bdc1c5;
+    --color-icon-interactive-inverted: #9fc7f8;
 
     --color-bg-interactive: transparent;
-    --color-bg-interactive-hover: #E7E7E7;
+    --color-bg-interactive-hover: #e7e7e7;
     --color-bg-interactive-active: var(--color-accent);
     --color-bg-interactive-active-hover: var(--color-accent);
 
@@ -53,8 +53,9 @@
     --color-text-button: #646464;
     --color-text-button-hover: #575757;
 
-    --color-border-primary: #E4E4E4;
-    --color-border-secondary: #F1F1F1;
+    --color-border-primary: #e4e4e4;
+    --color-border-secondary: #f1f1f1;
+    --color-border-tertiary: #f6f6f6;
 
     --color-box-shadow: rgba(0, 0, 0, 0.05);
   }
@@ -64,56 +65,57 @@
   :root {
     --color-accent: #264777;
 
-    --color-bg-surface-1: #1E1E1E;
+    --color-bg-surface-1: #1e1e1e;
     --color-bg-surface-2: #262626;
     --color-bg-surface-3: #363636;
 
-    --color-text-primary: #EDEDED;
-    --color-text-secondary: #C3C3C3;
-    --color-text-tertiary: #7B7D80;
-    --color-text-interactive: #86BDFF;
-    --color-text-destructive: #FF8686;
+    --color-text-primary: #ededed;
+    --color-text-secondary: #c3c3c3;
+    --color-text-tertiary: #7b7d80;
+    --color-text-interactive: #86bdff;
+    --color-text-destructive: #ff8686;
     --color-text-interactive-inverted: #fff;
     --color-text-attention-info: #264777;
-    --color-text-attention-success: #88D8AA;
-    --color-text-attention-failure: #FF8686;
+    --color-text-attention-success: #88d8aa;
+    --color-text-attention-failure: #ff8686;
 
-    --color-bg-indicator-active: #86BDFF;
+    --color-bg-indicator-active: #86bdff;
     --color-bg-indicator-inactive: #333333;
     --color-bg-indicator-inactive-hover: #3d3d3d;
-    
+
     --color-bg-control: #363636; /*-- menus items, popover items, etc. --*/
-    --color-bg-control-hover: #3E3E3E;
+    --color-bg-control-hover: #3e3e3e;
     --color-bg-control-destructive: #363636;
-    --color-bg-control-destructive-hover: #3E3E3E;
-    
-    --color-bg-attention-success: #1D3326;
-    --color-bg-attention-failure: #371F1F;
-    
+    --color-bg-control-destructive-hover: #3e3e3e;
+
+    --color-bg-attention-success: #1d3326;
+    --color-bg-attention-failure: #371f1f;
+
     --color-bg-indicator-inactive: #333333;
-    
-    --color-bg-input-enabled: #1E1E1E;
+
+    --color-bg-input-enabled: #1e1e1e;
     --color-bg-input-border-enabled: #6284b6;
     --color-bg-input-interactive-enabled: #14315d;
 
     --color-icon-primary: #cfcfcf;
-    --color-icon-primary-inverted: #B3B3B3;
-    --color-icon-secondary: #C3C3C3;
-    --color-icon-tertiary: #57595B;
-    --color-icon-interactive-inverted: #6284B6;
+    --color-icon-primary-inverted: #b3b3b3;
+    --color-icon-secondary: #c3c3c3;
+    --color-icon-tertiary: #57595b;
+    --color-icon-interactive-inverted: #6284b6;
 
     --color-bg-interactive: transparent;
-    --color-bg-interactive-hover: #2E2E2E;
+    --color-bg-interactive-hover: #2e2e2e;
     --color-bg-interactive-active: var(--color-accent);
     --color-bg-interactive-active-hover: var(--color-accent);
 
     --color-bg-button: transparent;
     --color-bg-button-hover: rgba(255 255 255 / 6%);
-    --color-text-button: #C3C3C3;
-    --color-text-button-hover: #EDEDED;
+    --color-text-button: #c3c3c3;
+    --color-text-button-hover: #ededed;
 
     --color-border-primary: #383838;
     --color-border-secondary: rgba(255 255 255 / 7%);
+    --color-border-tertiary: rgba(255 255 255 / 3%);
 
     --color-box-shadow: rgba(0, 0, 0, 0.075);
   }
@@ -135,11 +137,13 @@ body {
   height: var(--doc-height);
   margin: 0;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 input {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 #app {
@@ -157,5 +161,5 @@ button {
 }
 
 input::placeholder {
-  color: #9A9EA4;
+  color: #9a9ea4;
 }
