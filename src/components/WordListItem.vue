@@ -31,6 +31,13 @@ export default defineComponent({
     :key="`${wordText}${wordListItemIndex}`"
   >
     <div class="word-list-item-and-indicator-container">
+      <span class="drag-handle" v-if="wordListIsInEditMode">
+        <Icon name="dragHandle" color="var(--color-icon-tertiary)" />
+      </span>
+      <span v-if="!wordListIsInEditMode" class="word-state-indicator"></span>
+      {{ wordText }}
+    </div>
+    <div class="word-edit-controls">
       <button
         v-if="wordListIsInEditMode"
         class="delete-word-button"
@@ -38,13 +45,6 @@ export default defineComponent({
       >
         <img :src="deleteIcon2" alt="Delete icon" />
       </button>
-      <span v-if="!wordListIsInEditMode" class="word-state-indicator"></span>
-      {{ wordText }}
-    </div>
-    <div class="word-edit-controls">
-      <span class="drag-handle" v-if="wordListIsInEditMode">
-        <Icon name="dragHandle" color="var(--color-icon-tertiary)" />
-      </span>
     </div>
   </li>
 </template>
@@ -63,7 +63,7 @@ export default defineComponent({
 }
 
 .word-list-is-in-edit-mode {
-  padding-right: 0;
+  padding-left: 0;
 }
 
 .word-list-item:not(.active-word-list-item):hover {
@@ -86,6 +86,10 @@ export default defineComponent({
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.word-list-is-in-edit-mode .word-list-item-and-indicator-container {
+  gap: 0px;
 }
 
 .word-state-indicator {
@@ -134,15 +138,11 @@ export default defineComponent({
 
 @media (max-width: 1400px) {
   .word-list-item {
-    height: 40px;
+    height: 44px;
     padding: 0 10px;
     border-radius: 0;
     box-shadow: 0 11px 0 -10px var(--color-border-tertiary);
     font-size: 16px;
-  }
-
-  .word-list-is-in-edit-mode {
-    padding-right: 2px;
   }
 
   .drag-handle {
@@ -162,13 +162,10 @@ export default defineComponent({
     box-shadow: none;
   }
 
-  .sortable-chosen .drag-handle,
-  .sortable-ghost .drag-handle {
-    padding-inline: 12px;
-  }
-
   .word-list-is-in-edit-mode .word-list-item-and-indicator-container {
-    gap: 12px;
+    position: relative;
+    right: 8px;
+    gap: 0px;
   }
 }
 </style>

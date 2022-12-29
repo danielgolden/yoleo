@@ -46,18 +46,21 @@ export default defineComponent({
       const activeItemIsBeingDragged = e.oldIndex === store.currentWordIndex;
       const activeItemIsBeforeDragged = e.oldIndex > store.currentWordIndex;
       const activeItemIsAfterDragged = e.oldIndex < store.currentWordIndex;
-      const lengthOfCurrentWordList = store.wordLists[store.currentWordListIndex].words.length
-      const currentItemIsLastItem = store.currentWordIndex !== lengthOfCurrentWordList
-      const currentItemIsFirstItem = store.currentWordIndex !== lengthOfCurrentWordList
+      const lengthOfCurrentWordList =
+        store.wordLists[store.currentWordListIndex].words.length;
+      const currentItemIsLastItem =
+        store.currentWordIndex !== lengthOfCurrentWordList;
+      const currentItemIsFirstItem =
+        store.currentWordIndex !== lengthOfCurrentWordList;
 
       if (activeItemIsBeingDragged) {
-        store.currentWordIndex = e.newIndex
+        store.currentWordIndex = e.newIndex;
       } else if (activeItemIsBeforeDragged && !currentItemIsLastItem) {
         store.currentWordIndex++;
       } else if (activeItemIsAfterDragged && currentItemIsFirstItem) {
         store.currentWordIndex--;
       }
-      
+
       this.drag = false;
     },
   },

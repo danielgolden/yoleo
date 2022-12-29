@@ -15,6 +15,12 @@ export default defineComponent({
           onClick: () => this.$emit("editButtonClick"),
           destructive: false,
         },
+        {
+          label: "Move",
+          icon: "arrowSwitchVertical",
+          onClick: () => this.$emit("reorderModeEnabled"),
+          destructive: false,
+        },
         ...(store.wordLists.length > 1
           ? [
               {
@@ -101,6 +107,7 @@ export default defineComponent({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         class="word-list-name-header-icon"
+        v-if="!wordListIsInEditMode"
       >
         <path
           v-if="open"
@@ -119,6 +126,16 @@ export default defineComponent({
           "
         />
       </svg>
+      <span class="group-drag-handle" v-if="wordListIsInEditMode">
+        <Icon
+          name="dragHandle"
+          :color="
+            isCurrentWordList
+              ? 'var(--color-icon-interactive-inverted)'
+              : 'var(--color-icon-primary)'
+          "
+        />
+      </span>
       <input
         type="text"
         v-show="wordListIsInEditMode"
@@ -198,11 +215,12 @@ export default defineComponent({
 }
 
 .edit-button {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
   position: relative;
-  left: 2px;
+  left: 6px;
   bottom: 0.5px;
-  display: grid;
-  place-items: center;
   border: none;
   background-color: transparent;
 }
@@ -222,6 +240,7 @@ export default defineComponent({
 }
 
 .header-name-edit-input {
+  width: 175px;
   position: absolute;
   top: 6px;
   left: 32px;
@@ -239,9 +258,19 @@ export default defineComponent({
   background-color: var(--color-bg-input-interactive-enabled);
 }
 
+.group-drag-handle {
+  height: 100%;
+  padding: 16px 11px;
+  display: grid;
+  place-items: center;
+  cursor: grab;
+  position: relative;
+  right: 9px;
+}
+
 @media (max-width: 1400px) {
   .word-list-name-container {
-    height: 40px;
+    height: 44px;
   }
 
   .word-list-name {
@@ -250,10 +279,14 @@ export default defineComponent({
   }
 
   .header-name-edit-input {
-    max-width: 71%;
+    width: 175px;
     font-size: 16px;
-    top: 9px;
-    padding: 2px 6px;
+    top: 7px;
+    padding: 6px;
+  }
+
+  .group-drag-handle {
+    padding: 11px;
   }
 }
 </style>
