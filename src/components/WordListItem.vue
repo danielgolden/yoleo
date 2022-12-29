@@ -63,6 +63,7 @@ export default defineComponent({
 }
 
 .word-list-is-in-edit-mode {
+  cursor: default;
   padding-left: 0;
 }
 

@@ -219,7 +219,7 @@ export default defineComponent({
   flex-direction: row;
   gap: 4px;
   position: relative;
-  left: 6px;
+  left: 4px;
   bottom: 0.5px;
   border: none;
   background-color: transparent;
@@ -240,7 +240,6 @@ export default defineComponent({
 }
 
 .header-name-edit-input {
-  width: 175px;
   position: absolute;
   top: 6px;
   left: 32px;
@@ -279,7 +278,7 @@ export default defineComponent({
   }
 
   .header-name-edit-input {
-    width: 175px;
+    width: 71%;
     font-size: 16px;
     top: 7px;
     padding: 6px;
