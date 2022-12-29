@@ -15,12 +15,6 @@ export default defineComponent({
           onClick: () => this.$emit("editButtonClick"),
           destructive: false,
         },
-        {
-          label: "Move",
-          icon: "arrowSwitchVertical",
-          onClick: () => this.$emit("reorderModeEnabled"),
-          destructive: false,
-        },
         ...(store.wordLists.length > 1
           ? [
               {
