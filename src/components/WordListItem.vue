@@ -159,7 +159,7 @@ export default defineComponent({
 
   .word-list-item:hover {
     border-radius: 4px;
-    border: none;
+    box-shadow: none;
   }
 
   .sortable-chosen .drag-handle,
