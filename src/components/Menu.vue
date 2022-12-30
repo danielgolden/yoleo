@@ -124,7 +124,7 @@ export default defineComponent({
 }
 
 .settings-menu {
-  min-width: 200px;
+  min-width: 225px;
 }
 
 .menu-item {

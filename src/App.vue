@@ -36,18 +36,24 @@ export default defineComponent({
       ]();
     },
     lastWordInListIsActive() {
-      return this.store.currentWordIndex === this.currentWordListWords.length - 1;
+      return (
+        this.store.currentWordIndex === this.currentWordListWords.length - 1
+      );
     },
     currentReviewUnitWord() {
-      return this.store.currentWordListReviewUnit.words[this.store.currentWordIndex]
+      return this.store.currentWordListReviewUnit.words[
+        this.store.currentWordIndex
+      ];
     },
     wordFailed() {
       const currentWordIndex = this.store.currentWordIndex;
       const currentReviewUnitWords = this.store.currentWordListReviewUnit.words;
       const currentReviewUnitWord = currentReviewUnitWords[currentWordIndex];
 
-      return !currentReviewUnitWord.successful && this.currentReviewUnitWord.reviewed
-    }
+      return (
+        !currentReviewUnitWord.successful && this.currentReviewUnitWord.reviewed
+      );
+    },
   },
   methods: {
     advanceWord() {
@@ -99,7 +105,8 @@ export default defineComponent({
 
         this.store.wordLists = parsedData.wordLists;
         this.store.gameSettings = parsedData.gameSettings;
-        this.store.currentWordListIndex = parsedData.gameState.currentWordListIndex;
+        this.store.currentWordListIndex =
+          parsedData.gameState.currentWordListIndex;
         this.store.currentWordIndex = parsedData.gameState.currentWordIndex;
       } else {
         this.store.wordLists = [
@@ -156,7 +163,7 @@ export default defineComponent({
       this.store.currentWordListReviewUnit = new wordListReviewUnit(
         this.currentWordListWords
       );
-    }
+    },
   },
   mounted: function () {
     this.loadGameData();
@@ -183,34 +190,34 @@ export default defineComponent({
     window.addEventListener("resize", this.setDocumentDimensions);
   },
   watch: {
-    'store.currentWordListIndex'() {
+    "store.currentWordListIndex"() {
       this.saveGameData();
       this.newWordListReviewUnit();
     },
-    'store.currentWordIndex'() {
+    "store.currentWordIndex"() {
       this.store.wordCompleted = false;
     },
-    'store.wordCompleted'(newValue) {
+    "store.wordCompleted"(newValue) {
       if (newValue) {
-        this.store.celebrationActive = true;        
+        this.store.celebrationActive = true;
       } else {
         setTimeout(() => {
-          this.store.celebrationActive = false;        
-        }, 1000)
+          this.store.celebrationActive = false;
+        }, 1000);
       }
     },
-    'store.wordLists': {
+    "store.wordLists": {
       handler() {
         this.saveGameData();
       },
-      deep: true
+      deep: true,
     },
-    'store.currentWordListReviewUnit': {
+    "store.currentWordListReviewUnit": {
       handler() {
         this.saveGameData();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
 });
 </script>
@@ -226,10 +233,8 @@ export default defineComponent({
     @update-current-word-list="(incomingWordListIndex: number) => updateCurrentWordListIndex(incomingWordListIndex)"
     @update-word-list-name="(newData: newwordListHeaderData) => updatewordListHeader(newData)"
   />
-  <SuccessCelebration
-    v-if="store.celebrationActive"
-  />
-  <WordReviewUnitProgressBar />
+  <SuccessCelebration v-if="store.celebrationActive" />
+  <WordReviewUnitProgressBar v-if="store.gameSettings.showProgressBar" />
   <WordResultControls />
   <h1
     :class="{
@@ -241,7 +246,7 @@ export default defineComponent({
     data-testid="currentWord"
     v-if="currentWord?.length > 0"
   >
-    {{currentWordFormatted}}
+    {{ currentWordFormatted }}
   </h1>
 </template>
 
@@ -253,9 +258,8 @@ export default defineComponent({
   text-align: center;
   margin: 0 auto;
   z-index: 1;
-  transition: 
-    all 300ms cubic-bezier(.215, .61, .355, 1),
-    opacity 150ms cubic-bezier(.215, .61, .355, 1);
+  transition: all 300ms cubic-bezier(0.215, 0.61, 0.355, 1),
+    opacity 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .highlighted-char,
@@ -274,10 +278,10 @@ export default defineComponent({
 @media (max-width: 700px) {
   .current-word-with-main-menu-open {
     opacity: 0;
-  } 
+  }
 }
 
 .current-word-failed {
-  opacity: .65;
+  opacity: 0.65;
 }
 </style>

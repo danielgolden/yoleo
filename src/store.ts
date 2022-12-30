@@ -16,12 +16,13 @@ export const store = reactive({
   wordCompleted: false,
   gameSettings: {
     case: "sentence", // upper, lower, sentence
-    audio: false, // upper, lower, sentence
+    audio: false,
+    showProgressBar: true,
     // order: 'chronologial', // random
     // wordLength
   },
   celebrationActive: false,
   activationResetDelay: 2000,
   newWordListRecentlyAdded: false,
-  anEditModeIsActive: false
+  anEditModeIsActive: false,
 });
