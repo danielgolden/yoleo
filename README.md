@@ -1,5 +1,5 @@
 # YoLeo - a teaching tool
-This is a little tool for helping to teach kids to read. Add words, make word groups, celebrate progress 🎉.
+This is a little tool I made for helping me teach my daughter to read. Add words, make word groups, celebrate progress 🎉.
 
 ![YoLeo Demo](https://user-images.githubusercontent.com/812989/209367904-3f0f9295-c418-4651-ac35-15eea1c6d45f.gif)
 
